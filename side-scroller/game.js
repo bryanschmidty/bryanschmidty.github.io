@@ -4,9 +4,9 @@ const c = canvas.getContext('2d')
 canvas.width = innerWidth
 canvas.height = innerHeight
 
-const gravity = 0.8
+const gravity = 0.7
 const jump = -20
-const speed = 4
+const speed = 6
 const screen = {
     bound: {
         left: 100,
@@ -22,7 +22,7 @@ class Platform {
         }
 
         this.width = 200
-        this.height = 20
+        this.height = 50
     }
 
     draw() {
@@ -67,6 +67,11 @@ class Player {
             left: false,
             right: false
         }
+        this.action = {
+            jumping: false,
+            falling: true,
+            standing: false
+        }
         this.width = 45
         this.height = 45
     }
@@ -82,6 +87,7 @@ class Player {
     }
 
     update() {
+        // change x velocity
         if (this.direction.right && !this.direction.left) {
             this.velocity.x = speed
         } else if (this.direction.left && !this.direction.right) {
@@ -90,11 +96,10 @@ class Player {
             this.velocity.x = 0
         }
 
-        let newY = this.position.y + this.height + this.velocity.y;
-        if (newY < canvas.height) {
-            this.velocity.y += gravity
-        } else if (newY > canvas.height) {
-            this.velocity.y = canvas.height - (this.position.y + this.height)
+        // change y velocity
+        if (this.action.jumping && this.action.standing) {
+            this.velocity.y = jump
+            this.action.standing = false
         }
 
         // fix jittery y velocity
@@ -102,15 +107,47 @@ class Player {
             this.velocity.y = 0
         }
 
+        // check jumping / falling
+        let newY = this.position.y + this.height + this.velocity.y
+        let newX = this.position.x - level.position + this.velocity.x
+
+        if (this.action.falling && isPlatform(newX, newY, this.width)) {
+            let testY = newY
+            for (; testY > this.position.y + this.height; testY--) {
+                if (isPlatform(newX, testY, this.width)) break
+            }
+            this.velocity.y = testY - this.position.y - this.height
+            this.action.falling = false
+            this.action.standing = true
+        } else
+        if (this.action.standing && isPlatform(newX, this.position.y + this.height + 1, this.width)) {
+            this.velocity.y = 0
+            this.action.falling = false
+            this.action.standing = true
+        } else
+        if (newY < canvas.height) {
+            this.velocity.y += gravity
+            if (this.velocity.y > 0) {
+                this.action.falling = true
+            }
+        } else if (newY > canvas.height) {
+            this.velocity.y = canvas.height - (this.position.y + this.height)
+            this.action.falling = false
+            this.action.standing = true
+        }
+
+
+        // apply velocity
         this.position.y += this.velocity.y
         this.position.x += this.velocity.x
 
-        let newX = this.position.x - level.position
+        // Scroll level if player moves out of bounds
         if (newX > screen.bound.right && level.position < level.length) {
             level.position += newX - screen.bound.right
         } else if (newX < screen.bound.left && level.position > 0) {
             level.position -= screen.bound.left - newX
         }
+
 
         if (this.position.x + this.width > level.length) {
             this.position.x = level.length - this.width
@@ -119,7 +156,6 @@ class Player {
             this.position.x = 0
             this.velocity.x = 0
         }
-
         this.draw()
     }
 
@@ -136,11 +172,10 @@ animate()
 
 addEventListener('keydown', ({key}) => {
     switch (key) {
+        case ' ':
         case 'w':
         case 'ArrowUp':
-            if (level.player.velocity.y == 0) {
-                level.player.velocity.y = jump
-            }
+            level.player.action.jumping = true
             break
         case 'a':
         case 'ArrowLeft':
@@ -155,9 +190,15 @@ addEventListener('keydown', ({key}) => {
 
 addEventListener('keyup', ({key}) => {
     switch (key) {
+        case ' ':
+        case 'w':
+        case 'ArrowUp':
+            level.player.action.jumping = false
+            break
         case 'a':
         case 'ArrowLeft':
             level.player.direction.left = false
+            break
         case 'd':
         case 'ArrowRight':
             level.player.direction.right = false
@@ -165,12 +206,21 @@ addEventListener('keyup', ({key}) => {
     }
 })
 
+// addEventListener('mousemove', ({clientX, clientY}) => {
+//     console.log(clientX, clientY, getColor(clientX, clientY))
+// })
+
 function rgbToHex(r, g, b) {
     if (r > 255 || g > 255 || b > 255)
         throw "Invalid color component";
     return ((r << 16) | (g << 8) | b).toString(16);
 }
 
-let p = c.getImageData(400 - level.position + 1, canvas.height - 200 + 1, 1, 1)
-var hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
-console.log(hex)
+function getColor(x, y) {
+    let p = c.getImageData(x, y, 1, 1).data
+    return "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6)
+}
+
+function isPlatform(x, y, width) {
+    return getColor(x, y) == '#008000' || getColor(x + width, y) == '#008000'
+}
