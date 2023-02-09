@@ -24,13 +24,13 @@ for (let filename = 0; filename <= 9; filename++) {
 
 // map
 let Map = function () {
-    this.display = false
-    this.showRays = false
+    this.display = true
+    this.showRays = true
     this.canvas = document.getElementById('map')
     this.context = this.canvas.getContext('2d')
     this.size = {x:0, y:0}
     this.scale = 64
-    this.drawScale = this.scale * 3
+    this.drawScale = 1;//this.scale * 3
     this.directionReference = {S: 0, SE: 1, E: 2, NE: 3, N: 4, NW: 5, W: 6, SW: 7}
     this.data = [
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -45,12 +45,31 @@ let Map = function () {
         [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [2, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     ]
+    // this.data = [
+    //     [1, 1, 1, 1, 1],
+    //     [1, 0, 0, 0, 1],
+    //     [1, 0, 0, 0, 1],
+    //     [1, 0, 0, 0, 1],
+    //     [1, 1, 1, 1, 1],
+    // ]
     this.player = {
         x: 2,
         y: 3,
@@ -65,6 +84,8 @@ let Map = function () {
         this.canvas.style.visibility = this.display ? 'visible' : 'hidden'
 
         // update canvas size
+        // this.canvas.width = window.innerWidth;
+        // this.canvas.height = window.innerHeight;
         this.canvas.width = window.innerWidth
         this.canvas.height = window.innerHeight
 
@@ -82,19 +103,8 @@ let Map = function () {
             for (let row = 0; row < this.size.y; row++) {
                 for (let col = 0; col < this.size.x; col++) {
                     texture = this.data[row][col];
-                    if (texture !== 0) {
-                        // color = '#383838'
-                        this.drawSquare(col, row, '#383838')
-                        this.context.drawImage(
-                            WALLS[Math.abs(texture)],
-                            0, 0,
-                            64, 64,
-                            this.offset.x + col * this.drawScale, this.offset.y + row * this.drawScale,
-                            this.drawScale, this.drawScale
-                        )
-                    } else {
-                        this.drawSquare(col, row, '#989898')
-                    }
+                    color = texture == 0 ? '#aaaaaa' : '#444444'
+                    this.drawSquare({col, row, color, texture})
                 }
             }
 
@@ -102,16 +112,235 @@ let Map = function () {
             this.drawPlayer(player)
         }
 
-        this.rayCasting()
+        // this.rayCasting3()
+        // if (!this.showRays)
+        //     this.rayCasting2()
+        // else
+            this.rayCasting()
     }
 
-    this.drawSquare = function (col, row, color) {
-        this.context.fillStyle = color || 'cyan'
-        this.context.fillRect(
-            this.offset.x + col * this.drawScale,
-            this.offset.y + row * this.drawScale,
-            this.drawScale, this.drawScale
-        )
+    this.rayCasting3 = function () {
+        let fov = Math.PI / 3
+        let startAngle = player.coords.angle + fov / 2
+
+        let point = player.coords
+        let angle = player.coords.angle
+        let response
+        while (true) {
+            if (!point?.x) {
+                debugger
+            }
+            response = this.calculateRay(point, angle)
+            if (response.error) break;
+            if (response.texture) break;
+
+            point = response.point
+        }
+
+        // for (let ray = 0; ray < WIDTH; ray++) {
+        //     angle = startAngle - ray * fov / WIDTH
+        //
+        //
+        // }
+    }
+
+    this.drawLine = function(fromPoint, toPoint, color) {
+        fromPoint = this.translateDrawingCoords(fromPoint)
+        toPoint = this.translateDrawingCoords(toPoint)
+        this.context.strokeStyle = color || 'yellow'
+        this.context.beginPath()
+        this.context.moveTo(fromPoint.x, fromPoint.y)
+        this.context.lineTo(toPoint.x, toPoint.y)
+        this.context.stroke()
+    }
+
+    this.drawSquare = function (args) {
+        let texture = Math.abs(args?.texture || 0)
+        let x = args?.x || args?.col * this.drawScale + this.offset.x
+        let y = args?.y || args?.row * this.drawScale + this.offset.y
+        let w = args?.w || this.drawScale - 1
+        let h = args?.h || this.drawScale - 1
+
+        if (!x || !y) return
+
+        this.context.save()
+        this.context.globalAlpha = args?.alpha || 1
+        if (texture) {
+            this.context.drawImage(
+                WALLS[texture],
+                0, 0, 64, 64,
+                x, y, w, h
+            )
+        } else {
+            this.context.fillStyle = args?.color || 'cyan'
+            this.context.fillRect(x, y, w, h)
+        }
+        this.context.restore()
+    }
+
+    this.drawDot = function (x, y, color) {
+        let coords = this.translateDrawingCoords({x, y})
+
+        this.context.fillStyle = color
+        this.context.beginPath()
+        this.context.arc(coords.x, coords.y, 5, 0, Math.PI * 2)
+        this.context.fill()
+    }
+
+    this.mapTruncate = function (value) {
+        return Math.floor(value - Math.floor(value / map.scale) * map.scale)
+    }
+
+    this.calculateRay = function (point, angle) {
+        console.log(angle)
+        let sin = Math.sin(angle) || +'1e-9'
+        let cos = Math.cos(angle) || +'1e-9'
+        let tile = {
+            x: Math.floor(point.x / this.scale),
+            y: Math.floor(point.y / this.scale)
+        }
+
+        let dirX = sin >=0 ? 1 : -1
+        let dirY = cos >=0 ? 1 : -1
+
+        let diffX = dirX < 0 ? point.x - tile.x * map.scale : (tile.x + 1) * map.scale - point.x
+        let diffY = dirY < 0 ? point.y - tile.y * map.scale : (tile.y + 1) * map.scale - point.y
+
+        // let distX = diffX * Math.abs(1 / (sin || +'1e30'))
+        // let distY = diffY * Math.abs(1 / (cos || +'1e30'))
+        let distX = Math.abs(diffX / sin) || +'1e3'
+        let distY = Math.abs(diffY / cos) || +'1e3'
+
+        let newPoint = {
+            x: Math.round(point.x + sin * Math.min(distX, distY)),
+            y: Math.round(point.y + cos * Math.min(distX, distY))
+        }
+        console.log(dirX, dirY, distX, distY, newPoint)
+
+        let collisionVertical = distX < distY
+        let collisionHorizontal = distY < distX
+
+        // shouldn't happen, but just in case
+        if (newPoint.x <= 0 || newPoint.x >= this.size.x * this.scale || newPoint.y <=0 || newPoint.y >= this.size.y * this.scale) {
+            return {
+                error: 'out of bounds'
+            }
+        }
+
+        let newTile = {
+            x: Math.floor(newPoint.x / this.scale) - (collisionVertical && dirX < 0),
+            y: Math.floor(newPoint.y / this.scale) - (collisionHorizontal && dirY < 0)
+        }
+
+        this.drawLine(point, newPoint, 'yellow')
+
+        if (this.data[newTile.y][newTile.x] !== 0) {
+            this.drawSquare({col: newTile.x, row: newTile.y, alpha:0.4})
+
+            return {
+                tile: newTile,
+                texture: this.data[newTile.y][newTile.x],
+                collisionHorizontal,
+                collisionVertical,
+                collisionPoint: newPoint,
+                textureOffset: this.mapTruncate(collisionVertical ? newPoint.y : newPoint.x)
+            }
+        }
+
+        return {
+            point: newPoint,
+            angle
+        }
+    }
+
+    this.rayCasting2 = function () {
+        // https://lodev.org/cgtutor/raycasting.html
+        // https://www.youtube.com/watch?v=eOCQfxRQ2pY
+        let coords = player.coords
+        let fov = Math.PI / 3
+        let startAngle = coords.angle + fov / 2
+        let stepAngle = fov / WIDTH
+
+        loop: for (let ray = 0; ;) {
+            let coords = player.coords
+            // let angle = startAngle - ray * stepAngle
+            angle = 1.7693292519943298
+
+            let tileStep = {
+                x: Math.sin(angle) >= 0 ? 1 : -1,
+                y: Math.cos(angle) >= 0 ? 1 : -1
+            }
+            // if (ray !== 11) continue
+            while (true) {
+                // console.log(coords)
+                let tile = {
+                    x: Math.floor(coords.x / this.scale) + 1,
+                    y: Math.floor(coords.y / this.scale) + 1
+                }
+                let d = {
+                    x: tileStep.x < 0 ? coords.x - (tile.x - 1) * this.scale : tile.x * this.scale - coords.x,
+                    y: tileStep.y < 0 ? coords.y - (tile.y - 1) * this.scale : tile.y * this.scale - coords.y
+                }
+                let dDist = {
+                    x: Math.abs(1 / (Math.sin(angle) || +'1e30')),
+                    y: Math.abs(1 / (Math.cos(angle) || +'1e30'))
+                }
+                let sideDist = {
+                    x: d.x * dDist.x,
+                    y: d.y * dDist.y
+                }
+
+                let distance = Math.min(sideDist.x, sideDist.y)
+                coords = {
+                    x: coords.x + Math.sin(angle) * distance,
+                    y: coords.y + Math.cos(angle) * distance
+                }
+                let inTile
+                if (sideDist.x < sideDist.y) {
+                    inTile = {x: coords.x + tileStep.x, y: coords.y}
+                } else if (sideDist.y < sideDist.x) {
+                    inTile = {x: coords.x, y: coords.y + tileStep.y}
+                } else {
+                    inTile = {x: coords.x + tileStep.x, y: coords.y + tileStep.y}
+                }
+                // this.drawLine(player.coords, coords)
+                if (this.showRays) {
+                    this.drawLine(player.coords, coords, 'yellow')
+                }
+                if (inTile.x <= 0 || inTile.x >= this.size.x * this.scale || inTile.y <= 0 || inTile.y >= this.size.y * this.scale) {
+                    console.log(angle)
+                    break
+                }
+
+                let square = this.pointToSquare(inTile)
+                let texture = this.data[square.row][square.col]
+                debugger
+                // break
+                if (texture !== 0) {
+                    let depth = Math.floor((coords.x - player.coords.x) / Math.sin(angle))
+                    let wallHeight = Math.floor(this.scale * 280 / (depth + 0.0001))
+                    let wallY = Math.floor(HEIGHT / 2 - wallHeight / 2)
+                    let isVertical = sideDist.x < sideDist.y
+
+                    let isHorizontal = !isVertical
+                    let flipTexture = isVertical && Math.sin(angle) < 0 || isHorizontal && Math.cos(angle) < 0
+                    // let textureOffset = isVertical ?
+
+                    /* colors */
+                    context.fillStyle = isVertical ? (flipTexture ? 'red' : 'blue') : (flipTexture ? 'green' : 'yellow')
+                    context.fillRect(screenX + ray, screenY + wallY, 1, wallHeight)
+
+                    /* textures */
+                    // context.drawImage(
+                    //     WALLS[Math.abs(texture)],
+                    //     flip ? 64 -
+                    // )
+
+                    break
+                }
+                // coords = {x:coords.x + Math.sin(angle), y: coords.y + Math.cos(angle)}
+            }
+        }
     }
 
     this.rayCasting = function () {
@@ -197,25 +426,25 @@ let Map = function () {
 
             // render 3d projection
             let depth = Math.min(verticalDepth, horizontalDepth)
-            depth *= Math.cos(player.coords.angle - currentAngle)
+            // depth *= Math.cos(player.coords.angle - currentAngle)
             let textureOffsetX = verticalDepth < horizontalDepth ? textureEndY : textureEndX
             textureOffsetX = Math.floor(textureOffsetX - Math.floor(textureOffsetX / MAP_SCALE) * MAP_SCALE)
             let wallHeight = Math.floor(MAP_SCALE * 280 / (depth + 0.0001))
             let wallY = Math.floor(HEIGHT / 2 - wallHeight / 2)
 
             /* Just colors */
-            context.fillStyle = verticalDepth < horizontalDepth ? (currentSin < 0 ? 'red' : 'blue') : (currentCos < 0 ? 'green' : 'yellow')
-            context.fillRect(screenX + ray, screenY + HEIGHT / 2 - wallHeight / 2, 1, wallHeight)
+            // context.fillStyle = verticalDepth < horizontalDepth ? (currentSin < 0 ? 'red' : 'blue') : (currentCos < 0 ? 'green' : 'yellow')
+            // context.fillRect(screenX + ray, screenY + wallY, 1, wallHeight)
 
             // textures
-            // let flip = (verticalDepth < horizontalDepth && currentSin < 0) || (horizontalDepth < verticalDepth && currentCos > 0)
-            // context.drawImage(
-            //     WALLS[texture],
-            //     flip ? 64 - textureOffsetX -1 : textureOffsetX, 0,
-            //     1, 64,
-            //     screenX + ray, screenY + wallY,
-            //     1, wallHeight
-            // )
+            let flip = (verticalDepth < horizontalDepth && currentSin < 0) || (horizontalDepth < verticalDepth && currentCos > 0)
+            context.drawImage(
+                WALLS[texture],
+                flip ? 64 - textureOffsetX -1 : textureOffsetX, 0,
+                1, 64,
+                screenX + ray, screenY + wallY,
+                1, wallHeight
+            )
 
             /* fix texture overflow */
             // let textureHeight = wallHeight < HEIGHT ? this.scale : Math.floor(HEIGHT / wallHeight * this.scale)
@@ -231,35 +460,46 @@ let Map = function () {
 
     this.drawPlayer = function (player) {
         let coords = this.translateDrawingCoords(player.coords)
-        this.context.fillStyle = '#f00'
+        let sin = Math.sin(player.coords.angle)
+        let cos = Math.cos(player.coords.angle)
+
+        /* dot and arrow */
+        this.drawDot(player.coords.x, player.coords.y, 'red')
+        this.context.strokeStyle = 'red'
         this.context.beginPath()
-        this.context.moveTo(coords.x + Math.sin(player.coords.angle) * this.drawScale / 2, coords.y + Math.cos(player.coords.angle) * this.drawScale / 2)
-        this.context.lineTo(coords.x + Math.sin(player.coords.angle + Math.PI * 2 / 3) * this.drawScale / 3, coords.y + Math.cos(player.coords.angle + Math.PI * 2 / 3) * this.drawScale / 3)
-        this.context.lineTo(coords.x + Math.sin(player.coords.angle - Math.PI * 2 / 3) * this.drawScale / 3, coords.y + Math.cos(player.coords.angle - Math.PI * 2 / 3) * this.drawScale / 3)
-        this.context.fill()
+        this.context.moveTo(coords.x + sin * 10, coords.y + cos * 10)
+        this.context.lineTo(coords.x + sin * 128, coords.y + cos * 128)
+        this.context.stroke()
+
+        /* Triangle */
+        // this.context.fillStyle = '#f00'
+        // this.context.beginPath()
+        // this.context.moveTo(coords.x + Math.sin(player.coords.angle) * this.drawScale / 2, coords.y + Math.cos(player.coords.angle) * this.drawScale / 2)
+        // this.context.lineTo(coords.x + Math.sin(player.coords.angle + Math.PI * 2 / 3) * this.drawScale / 3, coords.y + Math.cos(player.coords.angle + Math.PI * 2 / 3) * this.drawScale / 3)
+        // this.context.lineTo(coords.x + Math.sin(player.coords.angle - Math.PI * 2 / 3) * this.drawScale / 3, coords.y + Math.cos(player.coords.angle - Math.PI * 2 / 3) * this.drawScale / 3)
+        // this.context.fill()
     }
 
-    this.translateCoords = function (coord) {
+    this.pointToSquare = function (point) {
         return {
-            x: coord.x / this.scale,
-            y: coord.y / this.scale
+            col: Math.floor(point.x / this.scale),
+            row: Math.floor(point.y / this.scale)
         }
     }
 
-    this.translateDrawingCoords = function (coord) {
-        coord = this.translateCoords(coord)
+    this.translateDrawingCoords = function (point) {
         return {
-            x: coord.x * this.drawScale + this.offset.x,
-            y: coord.y * this.drawScale + this.offset.y
+            x: Math.floor(point.x * this.drawScale / this.scale + this.offset.x),
+            y: Math.floor(point.y * this.drawScale / this.scale + this.offset.y)
         }
     }
 
-    this.checkCollision = function (oldCoord, newCoord, size) {
-        oldCoord = this.translateCoords(oldCoord)
-        newCoord = this.translateCoords(newCoord)
+    this.checkCollision = function (oldPoint, newPoint) {
+        oldPoint = this.pointToSquare(oldPoint)
+        newPoint = this.pointToSquare(newPoint)
         return {
-            x: this.data[Math.floor(oldCoord.y)][Math.floor(newCoord.x)] > 0,
-            y: this.data[Math.floor(newCoord.y)][Math.floor(oldCoord.x)] > 0
+            x: this.data[oldPoint.row][newPoint.col] > 0,
+            y: this.data[newPoint.row][oldPoint.col] > 0
         }
     }
 
@@ -339,7 +579,7 @@ let Player = function () {
             this.newCoords.x = this.coords.x + dx
             this.newCoords.y = this.coords.y + dy
 
-            let collisions = map.checkCollision(this.coords, this.newCoords, 10)
+            let collisions = map.checkCollision(this.coords, this.newCoords)
             if (!collisions.x) this.coords.x = this.newCoords.x
             if (!collisions.y) this.coords.y = this.newCoords.y
         }
@@ -347,7 +587,6 @@ let Player = function () {
         this.coords.angle += this.TURNING_SPEED * this.movement.angle
         if (this.coords.angle > Math.PI) this.coords.angle = -Math.PI
         if (this.coords.angle < -Math.PI) this.coords.angle = Math.PI
-        console.log(Math.round(Math.sin(player.coords.angle)), Math.round(Math.sin(player.coords.angle)))
     }
 }
 let player = new Player()
@@ -414,9 +653,11 @@ document.onpointermove = function (event) {
         player.stopTurning()
     }
 }
-document.onpointerdown = function () {
-    canvas.requestPointerLock()
-    paused = false
+document.onpointerdown = function (event) {
+    if (event.button === 0) {
+        canvas.requestPointerLock()
+        paused = false
+    }
 }
 
 // game loop
@@ -431,8 +672,8 @@ function gameLoop() {
     screenY = canvas.height / 2 - HEIGHT / 2
 
     // draw background
-    // context.fillStyle = 'Black'
-    // context.fillRect(screenX, screenY, WIDTH, HEIGHT)
+    context.fillStyle = 'Black'
+    context.fillRect(screenX, screenY, WIDTH, HEIGHT)
     context.drawImage(WALLS[0], screenX, screenY)
 
     // update player
