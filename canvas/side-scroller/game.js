@@ -4,9 +4,9 @@ const c = canvas.getContext('2d')
 canvas.width = innerWidth
 canvas.height = innerHeight
 
-const gravity = 0.7
+const gravity = 0.9
 const jump = -20
-const speed = 6
+const speed = 10
 const screen = {
     bound: {
         left: 100,
