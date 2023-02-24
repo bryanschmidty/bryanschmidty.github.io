@@ -1,0 +1,93 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background-color: rgba(52,53,65);
+}
+
+.menu {
+    width: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+    float: left;
+}
+.menu ul {
+    margin: 0;
+    padding: 0;
+}
+.menu a {
+    text-decoration: none;
+}
+
+.item {
+    border-top: 1px solid #aafc9e;
+    overflow: hidden;
+}
+
+.btn {
+    display: block;
+    padding: 16px 20px;
+    background: #aafc9e;
+    color: #000000;
+    position: relative;
+}
+
+.btn::before {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: #aafc9e;
+    left: 20px;
+    bottom: -7px;
+    transform: rotate(45deg);
+}
+
+.btn i {
+    margin-right: 10px;
+}
+
+.smenu {
+    background: #374151;
+    overflow: hidden;
+    transition: max-height 0.3s;
+    max-height: 0;
+}
+
+.smenu a {
+    display: block;
+    padding: 10px 20px;
+    color: white;
+    margin: 4px 0;
+    position: relative;
+}
+
+.smenu a::before {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 100%;
+    background: #aafc9e;
+    left: 0;
+    top: 0;
+    transition: .3s;
+    opacity: 0;
+}
+
+.smenu a:hover::before {
+    opacity: 1;
+}
+
+.item:target .smenu {
+    max-height: 50em;
+}
+
+.content {
+    height: 100%;
+    width: 100%
+}
+.content iframe {
+    width: calc(100% - 299px);
+    height: 100%;
+    float: left;
+    position: absolute;
+}

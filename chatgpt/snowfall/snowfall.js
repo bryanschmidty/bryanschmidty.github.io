@@ -64,7 +64,7 @@ Snowflake.prototype.update = function() {
     }
 }
 
-// Set up the function to generate a random number within a given range
+// Set up the function to generate.sh a random number within a given range
 function random(min, max) {
     return Math.random() * (max - min) + min;
 }

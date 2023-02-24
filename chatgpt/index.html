@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<!--    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">-->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <!-- https://www.codehim.com/menu/pure-css-vertical-menu-with-submenu-accordion-menu/ -->
+    <div class="menu">
+        <ul id="menu"></ul>
+    </div>
+    <div class="content">
+        <iframe src="chats/personal/basket-case-shakespeare.html"></iframe>
+    </div>
+    <script>
+        $(function () {
+            let convertString = function (string) {
+                string = string.replace(/\.[^/.]+$/, "")
+                string = string.replace(/[-_]/g, " ")
+                string = string.replace(/\b\w/g, function(match) {
+                    return match.toUpperCase();
+                });
+
+                return string
+            }
+            let generateMenuItem = function (data) {
+
+                if(data.file) {
+                    return $("<a>", {
+                        href: data.file,
+                        html: convertString(data.file)
+                    });
+                }
+
+                let listItem = $("<li>", {class: "item"}).attr('id', data.directory);
+
+                let objects = []
+                let link = $("<a>", {
+                    html: data.directory,
+                    href: "#" + data.directory,
+                    class: 'btn'
+                });
+                objects.push(link)
+
+                let div = $("<div>", {
+                    class: 'smenu'
+                })
+                $.each(data.files, function (index, item) {
+                    div.append(generateMenuItem(item))
+                })
+                objects.push(div)
+
+                listItem.append(objects)
+
+                return listItem
+                $.each(object.files, function (index, item) {
+                    generateMenuItem($('#' + data.directory), item)
+                });
+            }
+
+            $.getJSON("menu.json", function(json) {
+                $.each(json, function (index, item) {
+                    console.log(item)
+                    $('#menu').append(generateMenuItem(item))
+                })
+            })
+        });
+    </script>
+
+</body>
+</html>

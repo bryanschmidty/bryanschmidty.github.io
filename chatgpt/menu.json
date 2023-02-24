@@ -1,0 +1,149 @@
+[
+  {
+    "directory": "D&D",
+    "files": [
+      {
+        "file": "elvis-weapons.html"
+      }
+    ]
+  },
+  {
+    "directory": "Fashionphile",
+    "files": [
+      {
+        "file": "product-descriptions.html"
+      },
+      {
+        "file": "team-name-ideas.html"
+      }
+    ]
+  },
+  {
+    "directory": "HTML",
+    "files": [
+      {
+        "file": "canvas-boilerplate.html"
+      },
+      {
+        "file": "cookie-clicker.html"
+      },
+      {
+        "file": "green-page-with-button.html"
+      },
+      {
+        "file": "website-building.html"
+      }
+    ]
+  },
+  {
+    "directory": "Javascript",
+    "files": [
+      {
+        "file": "Snowfall_Animation.html"
+      },
+      {
+        "file": "capture-mouse-movement.html"
+      }
+    ]
+  },
+  {
+    "directory": "Laravel",
+    "files": [
+      {
+        "file": "chunking.html"
+      },
+      {
+        "file": "command-with-parameter.html"
+      },
+      {
+        "file": "migration-to-sql.html"
+      },
+      {
+        "file": "s3-file-copy.html"
+      }
+    ]
+  },
+  {
+    "directory": "Miscellaneous",
+    "files": [
+      {
+        "file": "aws-s3-presigned-url-shortened.html"
+      },
+      {
+        "file": "chatgpt-use-cases.html"
+      },
+      {
+        "file": "hotdog-in-microwave.html"
+      },
+      {
+        "file": "murder-mystery-plot.html"
+      },
+      {
+        "file": "password-strength.html"
+      }
+    ]
+  },
+  {
+    "directory": "PHP",
+    "files": [
+      {
+        "file": "benchmarking.html"
+      },
+      {
+        "file": "get-url-and-redirect.html"
+      },
+      {
+        "file": "remove-null-values-from-array.html"
+      },
+      {
+        "file": "sqlite.html"
+      }
+    ]
+  },
+  {
+    "directory": "Python",
+    "files": [
+      {
+        "file": "all-but-first-of-array.html"
+      },
+      {
+        "file": "crop-image.html"
+      },
+      {
+        "file": "null-coalesce.html"
+      },
+      {
+        "file": "virtual-env.html"
+      }
+    ]
+  },
+  {
+    "directory": "personal",
+    "files": [
+      {
+        "file": "basket-case-shakespeare.html"
+      },
+      {
+        "file": "basket-case-sonnet.html"
+      },
+      {
+        "file": "event-cancelled.html"
+      },
+      {
+        "file": "family-activities.html"
+      },
+      {
+        "file": "geography-quiz.html"
+      },
+      {
+        "file": "relieving-stress.html"
+      },
+      {
+        "file": "teenager-driving-practice.html"
+      },
+      {
+        "file": "wedding-shower-tradition.html"
+      }
+    ]
+  }
+]
