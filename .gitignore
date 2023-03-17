@@ -2,3 +2,5 @@
 .idea/
 
 .DS_Store
+
+canvas/usmap/node_modules/
