@@ -1,9 +1,11 @@
+// Initialize AWS S3 client and set default bucketName
 let s3 = new AWS.S3();
 let bucketName = '';
 
 const breadcrumbsEl = document.getElementById('breadcrumbs');
 const galleryEl = document.getElementById('gallery');
 
+// Fetch all objects in the bucket with the given prefix
 async function listObjects(prefix = '') {
     async function fetchAllObjects(prefix, accumulatedObjects = [], accumulatedPrefixes = [], marker = null) {
         return new Promise((resolve, reject) => {
@@ -457,8 +459,7 @@ document.getElementById("save-settings").addEventListener("click", () => {
     document.getElementById("settings-modal").classList.add("hidden");
 });
 
-
-// add ability to zoom
+// Add the ability to zoom
 document.addEventListener("DOMContentLoaded", function () {
     const imagePanel = document.querySelector(".image-panel");
     const modalImage = document.getElementById("modal-image");
