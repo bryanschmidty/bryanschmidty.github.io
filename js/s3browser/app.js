@@ -7,7 +7,7 @@ const breadcrumbsEl = document.getElementById('breadcrumbs');
 const galleryEl = document.getElementById('gallery');
 
 async function fetchAllObjects(prefix, accumulatedObjects = [], accumulatedPrefixes = [], marker = null) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         const params = {
             Bucket: window.bucketName,
             Delimiter: '/',
@@ -18,14 +18,26 @@ async function fetchAllObjects(prefix, accumulatedObjects = [], accumulatedPrefi
             params.Marker = marker;
         }
 
-        s3.listObjects(params, (err, data) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-
+        try {
+            const data = await s3.listObjects(params).promise();
             accumulatedObjects.push(...data.Contents);
-            accumulatedPrefixes.push(...data.CommonPrefixes)
+            accumulatedPrefixes.push(...data.CommonPrefixes);
+
+            if (versioningEnabled) {
+                // Fetch version information for each object if versioning is enabled
+                const objectsWithVersions = await Promise.all(
+                    data.Contents.map(async (object) => {
+                        const versions = await getObjectVersions(object.Key);
+                        return {
+                            ...object,
+                            versions: versions,
+                        };
+                    })
+                );
+
+                // Replace the original objects with the objects containing version information
+                accumulatedObjects = [...accumulatedPrefixes, ...objectsWithVersions];
+            }
 
             if (data.IsTruncated) {
                 // Fetch the next set of objects
@@ -33,9 +45,11 @@ async function fetchAllObjects(prefix, accumulatedObjects = [], accumulatedPrefi
                     .then((result) => resolve(result))
                     .catch((error) => reject(error));
             } else {
-                resolve({Contents: accumulatedObjects, CommonPrefixes: accumulatedPrefixes});
+                resolve({ Contents: accumulatedObjects, CommonPrefixes: accumulatedPrefixes });
             }
-        });
+        } catch (error) {
+            reject(error);
+        }
     });
 }
 
@@ -251,8 +265,9 @@ async function renderImage(object) {
     const fileExtension = objectKey.split('.').pop().toLowerCase();
     const isImage = fileExtensions.includes(fileExtension);
     const imageName = object.Key.split('/').pop();
+    const latestVersion = getLatestVersionId(object);
 
-    const localStorageImageData = await getImageFromLocalStorage(object.Key);
+    const localStorageImageData = await getImageFromLocalStorage(object.Key, latestVersion);
     let imageUrl, dimensions, versionCount;
     if (localStorageImageData) {
         imageUrl = localStorageImageData.dataUrl;
@@ -288,6 +303,19 @@ async function renderImage(object) {
       </div>
     </div>
   `;
+}
+
+function getLatestVersionId(object) {
+    if (!versioningEnabled) {
+        return null;
+    }
+
+    for (const version of object.versions) {
+        if (version.IsLatest) {
+            return version.VersionId;
+        }
+    }
+    return null;
 }
 
 async function isVersioningEnabled() {
@@ -381,26 +409,53 @@ async function displayImageInfo(imageInfo) {
 }
 
 // saving images in local storage
-function saveImageToLocalStorage(key, revisionId, dataUrl, dimensions, size, lastModified, expiration = 24 * 60 * 60 * 1000) {
+async function saveImageToLocalStorage(key, versionId, dataUrl, dimensions, expiration = 24 * 60 * 60 * 1000) {
     const now = new Date().getTime();
-    const imageData = {
-        dataUrl: dataUrl,
-        dimensions: dimensions,
-        size: size,
-        lastModified: lastModified,
+    const keyData = {
+        versionCount: 0,
         timestamp: now + expiration,
     };
+    const imageData = {
+        dataUrl: dataUrl,
+        dimensions: dimensions
+    }
 
     // Get existing data from local storage
     const existingDataJson = localStorage.getItem(key);
     let existingData = existingDataJson ? JSON.parse(existingDataJson) : {};
 
-    if (revisionId) {
-        // Store the imageData object in the revisions object with the revisionId as the key
+    if (versioningEnabled) {
+        // Fetch the object versions and store the modified timestamp for each version in the "revisions" object
+        const versions = await getObjectVersions(key);
+        imageData.versionCount = versions.length();
+
+        // Iterate through the versions and create an entry in the "revisions" object with the "ModifiedAt" timestamp
         existingData.revisions = existingData.revisions || {};
-        existingData.revisions[revisionId] = imageData;
+
+        for (const version of versions) {
+            const currentVersionId = version.VersionId;
+            const lastModified = version.LastModified.getTime();
+
+            // If versionId is null or matches the current version, save the other parameters
+            if (versionId === null || versionId === currentVersionId) {
+                existingData.revisions[currentVersionId] = {
+                    ...imageData,
+                    lastModified: lastModified,
+                };
+
+                // If versionId is not null and matches the current version, break the loop
+                if (versionId !== null) {
+                    break;
+                }
+            } else if (!existingData.revisions[currentVersionId]) {
+                // If the current version doesn't exist in the "revisions" object, create an entry with only the "lastModified" field
+                existingData.revisions[currentVersionId] = {
+                    lastModified: lastModified,
+                };
+            }
+        }
     } else {
-        // Store the imageData object directly if there is no revisionId
+        // Store the imageData object directly if versioning is not enabled
         existingData = imageData;
     }
 
