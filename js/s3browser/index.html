@@ -78,8 +78,11 @@
   </div>
 
   <footer>
-    <label for="gallery-image-size">Image Size</label>
-    <input type="range" id="gallery-image-size" name="gallery-image-size" min="128" max="512" value="256">
+    <div>
+      <label for="gallery-image-size">Grid Size</label>
+      <input type="range" id="gallery-image-size" name="gallery-image-size" min="128" max="512" value="256">
+    </div>
+    <div id="footer-info"></div>
   </footer>
 
   <script src="https://sdk.amazonaws.com/js/aws-sdk-2.813.0.min.js"></script>

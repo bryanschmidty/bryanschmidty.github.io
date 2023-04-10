@@ -1,45 +1,46 @@
 // Initialize AWS S3 client and set default bucketName
 let s3 = new AWS.S3();
 let bucketName = '';
+let versioningEnabled;
 
 const breadcrumbsEl = document.getElementById('breadcrumbs');
 const galleryEl = document.getElementById('gallery');
 
-// Fetch all objects in the bucket with the given prefix
-async function listObjects(prefix = '') {
-    async function fetchAllObjects(prefix, accumulatedObjects = [], accumulatedPrefixes = [], marker = null) {
-        return new Promise((resolve, reject) => {
-            const params = {
-                Bucket: window.bucketName,
-                Delimiter: '/',
-                Prefix: prefix,
-            };
+async function fetchAllObjects(prefix, accumulatedObjects = [], accumulatedPrefixes = [], marker = null) {
+    return new Promise((resolve, reject) => {
+        const params = {
+            Bucket: window.bucketName,
+            Delimiter: '/',
+            Prefix: prefix,
+        };
 
-            if (marker) {
-                params.Marker = marker;
+        if (marker) {
+            params.Marker = marker;
+        }
+
+        s3.listObjects(params, (err, data) => {
+            if (err) {
+                reject(err);
+                return;
             }
 
-            s3.listObjects(params, (err, data) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
+            accumulatedObjects.push(...data.Contents);
+            accumulatedPrefixes.push(...data.CommonPrefixes)
 
-                accumulatedObjects.push(...data.Contents);
-                accumulatedPrefixes.push(...data.CommonPrefixes)
-
-                if (data.IsTruncated) {
-                    // Fetch the next set of objects
-                    fetchAllObjects(prefix, accumulatedObjects, accumulatedPrefixes, data.NextMarker)
-                        .then((result) => resolve(result))
-                        .catch((error) => reject(error));
-                } else {
-                    resolve({Contents: accumulatedObjects, CommonPrefixes: accumulatedPrefixes});
-                }
-            });
+            if (data.IsTruncated) {
+                // Fetch the next set of objects
+                fetchAllObjects(prefix, accumulatedObjects, accumulatedPrefixes, data.NextMarker)
+                    .then((result) => resolve(result))
+                    .catch((error) => reject(error));
+            } else {
+                resolve({Contents: accumulatedObjects, CommonPrefixes: accumulatedPrefixes});
+            }
         });
-    }
+    });
+}
 
+// Fetch all objects in the bucket with the given prefix
+async function listObjects(prefix = '') {
     try {
         showLoadingScreen();
         const data = await fetchAllObjects(prefix);
@@ -78,36 +79,43 @@ function renderBreadcrumbs(prefix, imageName = '') {
     });
 }
 
-async function renderGallery(data) {
-    const folders = data.CommonPrefixes.map(prefix => {
-        const folderName = prefix.Prefix.split('/').slice(-2, -1)[0]; // Get the last part of the path
+function renderFolder(prefix) {
+    const folderName = prefix.Prefix.split('/').slice(-2, -1)[0]; // Get the last part of the path
 
-        return `
-      <div class="folder">
-        <a href="#" data-path="${prefix.Prefix}">
-          <div class="image-container">
-            <img src="folder_icon.svg" alt="${prefix.Prefix}">
-          </div>
-          <div class="image-info">
-            <span class="image-name">${folderName}</span>
-          </div>
-        </a>
-      </div>
+    return `
+        <div class="folder" data-path="${prefix.Prefix}">
+            <div class="image-container">
+                <img src="folder_icon.svg" alt="${prefix.Prefix}">
+            </div>
+            <div class="image-info">
+                <span class="image-name">${folderName}</span>
+            </div>
+        </div>
     `;
-    }).join('');
+}
+
+async function renderGallery(data) {
+    const folderCount = data.CommonPrefixes.length;
+    const folders = data.CommonPrefixes.map(prefix => renderFolder(prefix)).join('');
 
     const imageObjects = data.Contents.filter(object => !object.Key.endsWith('/'));
+    const fileCount = imageObjects.length;
+    const totalFileSize = imageObjects.reduce((total, object) => total + object.Size, 0);
+    const humanReadableFileSize = formatBytes(totalFileSize);
     const images = await Promise.all(imageObjects.map(object => renderImage(object)));
+
+    // Update the footer with the folder and file counts, and total file size
+    updateFooter(folderCount, fileCount, humanReadableFileSize);
 
     return new Promise((resolve) => {
         galleryEl.innerHTML = folders + images.join('');
 
-        galleryEl.querySelectorAll('.folder a').forEach(link => {
-            link.addEventListener('click', (event) => {
+        galleryEl.querySelectorAll('.folder').forEach(folder =>
+            folder.addEventListener('click', (event) => {
                 event.preventDefault();
-                listObjects(link.dataset.path);
-            });
-        });
+                listObjects(folder.dataset.path);
+            })
+        );
 
         galleryEl.querySelectorAll('.image img').forEach(img => {
             img.addEventListener('click', async (event) => {
@@ -132,6 +140,25 @@ async function renderGallery(data) {
     });
 }
 
+// Function to format bytes into a human-readable format
+function formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+
+function updateFooter(folderCount, fileCount, totalFileSize) {
+    const footerInfo = document.getElementById('footer-info');
+    footerInfo.innerHTML = `
+        Folders: <span class="footer-count">${folderCount}</span>
+        Files: <span class="footer-count">${fileCount}</span>
+        Total Size: <span class="footer-size">${totalFileSize}</span>
+    `;
+}
+
 function closeImageModal() {
     const imageModal = document.getElementById('image-modal');
     imageModal.classList.add('hidden');
@@ -153,7 +180,6 @@ function getSignedUrl(key, versionId = null) {
 
 function getObjectVersions(imageKey) {
     return new Promise((resolve, reject) => {
-        const versioningEnabled = isVersioningEnabled();
         if (!versioningEnabled) {
             resolve(null);
         }
@@ -220,11 +246,24 @@ async function renderImage(object) {
     const objectKey = object.Key;
     const fileExtension = objectKey.split('.').pop().toLowerCase();
     const isImage = fileExtensions.includes(fileExtension);
-
-    const imageUrl = isImage ? getSignedUrl(object.Key, object.VersionId) : 'file_icon.svg';
     const imageName = object.Key.split('/').pop();
 
-    const versioningEnabled = await isVersioningEnabled();
+    const localStorageImageUrl = await getImageFromLocalStorage(object.Key);
+    let imageUrl;
+    if (localStorageImageUrl) {
+        imageUrl = localStorageImageUrl;
+    } else {
+        imageUrl = isImage ? getSignedUrl(object.Key, object.VersionId) : 'file_icon.svg';
+
+        // Cache the image to localStorage if it's an image
+        if (isImage) {
+            const response = await fetch(imageUrl);
+            const blob = await response.blob();
+            const dataUrl = await blobToDataURL(blob);
+            saveImageToLocalStorage(object.Key, dataUrl);
+        }
+    }
+
     let versionCountText = '';
     if (versioningEnabled) {
         const versionCount = await getObjectVersionCount(objectKey);
@@ -247,6 +286,10 @@ async function renderImage(object) {
 }
 
 async function isVersioningEnabled() {
+    if (versioningEnabled !== undefined) {
+        return versioningEnabled;
+    }
+
     try {
         const params = {Bucket: window.bucketName};
 
@@ -256,12 +299,14 @@ async function isVersioningEnabled() {
                     console.error('Error checking versioning status:', error);
                     reject(error);
                 } else {
-                    resolve(response.Status === 'Enabled');
+                    versioningEnabled = response.Status === 'Enabled';
+                    resolve(versioningEnabled);
                 }
             });
         });
     } catch (error) {
         console.error('Error checking versioning status:', error);
+        versioningEnabled = false;
         return false;
     }
 }
@@ -275,12 +320,25 @@ async function getImageInfo(key) {
     const headObject = await s3.headObject(params).promise();
     const metadata = headObject.Metadata;
     const size = headObject.ContentLength;
-    const dimensions = `${headObject.width}x${headObject.height}`;
+
+    // Fetch the image URL and use getImageDimensions to get the dimensions
+    const imageUrl = getSignedUrl(key);
+    const { width, height } = await getImageDimensions(imageUrl);
+    const dimensions = `${width}x${height}`;
 
     // Fetch object versions
     const versions = await getObjectVersions(key);
 
     return {key, size, dimensions, metadata, versions};
+}
+
+function getImageDimensions(url) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve({ width: img.width, height: img.height });
+        img.onerror = () => reject(new Error('Failed to load image'));
+        img.src = url;
+    });
 }
 
 async function displayImageInfo(imageInfo) {
@@ -317,6 +375,41 @@ async function displayImageInfo(imageInfo) {
     versionsContainer.classList.remove('hidden');
 }
 
+// saving images in local storage
+function saveImageToLocalStorage(key, dataUrl, expiration = 24 * 60 * 60 * 1000) {
+    const now = new Date().getTime();
+    const imageData = {
+        dataUrl: dataUrl,
+        timestamp: now + expiration,
+    };
+    localStorage.setItem(key, JSON.stringify(imageData));
+}
+
+async function getImageFromLocalStorage(key) {
+    const imageDataJson = localStorage.getItem(key);
+    if (!imageDataJson) return null;
+
+    const imageData = JSON.parse(imageDataJson);
+    const now = new Date().getTime();
+
+    if (imageData.timestamp < now) {
+        localStorage.removeItem(key);
+        return null;
+    }
+
+    return imageData.dataUrl;
+}
+
+function blobToDataURL(blob) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+    });
+}
+
+
+
 // Cookie handling functions
 function setCookie(name, value, days) {
     const date = new Date();
@@ -342,7 +435,7 @@ function getCookie(name) {
     return "";
 }
 
-function updateConfig(bucketName, region, accessKeyId, secretAccessKey, imageSize) {
+async function updateConfig(bucketName, region, accessKeyId, secretAccessKey, imageSize) {
     // Update the global bucketName variable
     window.bucketName = bucketName;
 
@@ -360,6 +453,8 @@ function updateConfig(bucketName, region, accessKeyId, secretAccessKey, imageSiz
     document.getElementById('access-key-id').value = savedAccessKeyId;
     document.getElementById('secret-access-key').value = savedSecretAccessKey;
     document.getElementById('gallery-image-size').value = imageSize;
+
+    versioningEnabled = await isVersioningEnabled();
 
     listObjects();
 }
