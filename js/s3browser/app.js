@@ -271,7 +271,6 @@ async function renderImage(object) {
     let imageUrl, dimensions, versionCount;
     if (localStorageImageData) {
         imageUrl = localStorageImageData.dataUrl;
-        dimensions = localStorageImageData.dimensions;
         versionCount = localStorageImageData.versionCount;
     } else {
         imageUrl = isImage ? getSignedUrl(object.Key, object.VersionId) : 'file_icon.svg';
@@ -282,8 +281,7 @@ async function renderImage(object) {
             const blob = await response.blob();
             const dataUrl = await blobToDataURL(blob);
             dimensions = await getImageDimensions(imageUrl);
-            versionCount = await getObjectVersionCount(objectKey);
-            saveImageToLocalStorage(object.Key, dataUrl, dimensions, versionCount);
+            saveImageToLocalStorage(object.Key, latestVersion, dataUrl, dimensions);
         }
     }
 
@@ -412,51 +410,62 @@ async function displayImageInfo(imageInfo) {
 async function saveImageToLocalStorage(key, versionId, dataUrl, dimensions, expiration = 24 * 60 * 60 * 1000) {
     const now = new Date().getTime();
     const keyData = {
-        versionCount: 0,
         timestamp: now + expiration,
     };
-    const imageData = {
-        dataUrl: dataUrl,
-        dimensions: dimensions
-    }
 
     // Get existing data from local storage
     const existingDataJson = localStorage.getItem(key);
     let existingData = existingDataJson ? JSON.parse(existingDataJson) : {};
 
     if (versioningEnabled) {
-        // Fetch the object versions and store the modified timestamp for each version in the "revisions" object
+        // Fetch the object versions
         const versions = await getObjectVersions(key);
-        imageData.versionCount = versions.length();
 
-        // Iterate through the versions and create an entry in the "revisions" object with the "ModifiedAt" timestamp
-        existingData.revisions = existingData.revisions || {};
+        // Iterate through the versions and create an entry in the "versions" array
+        existingData.versions = existingData.versions || [];
 
         for (const version of versions) {
             const currentVersionId = version.VersionId;
-            const lastModified = version.LastModified.getTime();
+
+            // Find the index of the current version in the "versions" array
+            const versionIndex = existingData.versions.findIndex(v => v.versionId === currentVersionId);
 
             // If versionId is null or matches the current version, save the other parameters
             if (versionId === null || versionId === currentVersionId) {
-                existingData.revisions[currentVersionId] = {
-                    ...imageData,
-                    lastModified: lastModified,
+                const newVersionData = {
+                    versionId: currentVersionId,
+                    dataUrl: dataUrl,
+                    dimensions: dimensions
                 };
+
+                if (versionIndex === -1) {
+                    // Add the new version data to the "versions" array if it doesn't exist
+                    existingData.versions.push(newVersionData);
+                } else {
+                    // Update the existing version data in the "versions" array
+                    existingData.versions[versionIndex] = newVersionData;
+                }
 
                 // If versionId is not null and matches the current version, break the loop
                 if (versionId !== null) {
                     break;
                 }
-            } else if (!existingData.revisions[currentVersionId]) {
-                // If the current version doesn't exist in the "revisions" object, create an entry with only the "lastModified" field
-                existingData.revisions[currentVersionId] = {
-                    lastModified: lastModified,
-                };
+            } else if (versionIndex === -1) {
+                // If the current version doesn't exist in the "versions" array, create an empty entry
+                existingData.versions.push({ versionId: currentVersionId });
             }
         }
+        existingData = {
+            ...existingData,
+            ...keyData
+        };
     } else {
         // Store the imageData object directly if versioning is not enabled
-        existingData = imageData;
+        existingData = {
+            ...keyData,
+            dataUrl: dataUrl,
+            dimensions: dimensions
+        };
     }
 
     localStorage.setItem(key, JSON.stringify(existingData));
@@ -469,13 +478,13 @@ async function getImageFromLocalStorage(key, revisionId = null) {
     const existingData = JSON.parse(existingDataJson);
     const now = new Date().getTime();
 
-    // Get the imageData object for the specified revision or the latest data
-    const imageData = revisionId ? existingData.revisions[revisionId] : existingData;
-
-    if (imageData.timestamp < now) {
+    if (existingData.timestamp < now) {
         localStorage.removeItem(key);
         return null;
     }
+
+    // Get the imageData object for the specified revision or the latest data
+    const imageData = revisionId ? existingData.revisions[revisionId] : existingData;
 
     return imageData;
 }
