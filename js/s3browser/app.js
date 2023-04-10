@@ -111,33 +111,37 @@ async function renderGallery(data) {
         galleryEl.innerHTML = folders + images.join('');
 
         galleryEl.querySelectorAll('.folder').forEach(folder =>
-            folder.addEventListener('click', (event) => {
-                event.preventDefault();
-                listObjects(folder.dataset.path);
-            })
+            folder.addEventListener('click', onFolderClick)
         );
 
         galleryEl.querySelectorAll('.image img').forEach(img => {
-            img.addEventListener('click', async (event) => {
-                const imageKey = event.target.dataset.key;
-
-                // Show the modal and load the image
-                const imageUrl = getSignedUrl(imageKey);
-                const modalImage = document.getElementById('modal-image');
-                modalImage.src = imageUrl;
-
-                // Fetch and display image information
-                const imageInfo = await getImageInfo(imageKey);
-                displayImageInfo(imageInfo);
-
-                // Show the modal
-                const imageModal = document.getElementById('image-modal');
-                imageModal.classList.remove('hidden');
-            });
+            img.addEventListener('click', onImageClick);
         });
 
         resolve();
     });
+}
+
+function onFolderClick(event) {
+    event.preventDefault();
+    listObjects(event.target.closest('.folder').dataset.path);
+}
+
+async function onImageClick(event) {
+    const imageKey = event.target.dataset.key;
+
+    // Show the modal and load the image
+    const imageUrl = getSignedUrl(imageKey);
+    const modalImage = document.getElementById('modal-image');
+    modalImage.src = imageUrl;
+
+    // Fetch and display image information
+    const imageInfo = await getImageInfo(imageKey);
+    displayImageInfo(imageInfo);
+
+    // Show the modal
+    const imageModal = document.getElementById('image-modal');
+    imageModal.classList.remove('hidden');
 }
 
 // Function to format bytes into a human-readable format
@@ -377,23 +381,41 @@ async function displayImageInfo(imageInfo) {
 }
 
 // saving images in local storage
-function saveImageToLocalStorage(key, dataUrl, dimensions, versionCount, expiration = 24 * 60 * 60 * 1000) {
+function saveImageToLocalStorage(key, revisionId, dataUrl, dimensions, size, lastModified, expiration = 24 * 60 * 60 * 1000) {
     const now = new Date().getTime();
     const imageData = {
         dataUrl: dataUrl,
         dimensions: dimensions,
-        versionCount: versionCount,
+        size: size,
+        lastModified: lastModified,
         timestamp: now + expiration,
     };
-    localStorage.setItem(key, JSON.stringify(imageData));
+
+    // Get existing data from local storage
+    const existingDataJson = localStorage.getItem(key);
+    let existingData = existingDataJson ? JSON.parse(existingDataJson) : {};
+
+    if (revisionId) {
+        // Store the imageData object in the revisions object with the revisionId as the key
+        existingData.revisions = existingData.revisions || {};
+        existingData.revisions[revisionId] = imageData;
+    } else {
+        // Store the imageData object directly if there is no revisionId
+        existingData = imageData;
+    }
+
+    localStorage.setItem(key, JSON.stringify(existingData));
 }
 
-async function getImageFromLocalStorage(key) {
-    const imageDataJson = localStorage.getItem(key);
-    if (!imageDataJson) return null;
+async function getImageFromLocalStorage(key, revisionId = null) {
+    const existingDataJson = localStorage.getItem(key);
+    if (!existingDataJson) return null;
 
-    const imageData = JSON.parse(imageDataJson);
+    const existingData = JSON.parse(existingDataJson);
     const now = new Date().getTime();
+
+    // Get the imageData object for the specified revision or the latest data
+    const imageData = revisionId ? existingData.revisions[revisionId] : existingData;
 
     if (imageData.timestamp < now) {
         localStorage.removeItem(key);
