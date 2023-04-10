@@ -248,10 +248,12 @@ async function renderImage(object) {
     const isImage = fileExtensions.includes(fileExtension);
     const imageName = object.Key.split('/').pop();
 
-    const localStorageImageUrl = await getImageFromLocalStorage(object.Key);
-    let imageUrl;
-    if (localStorageImageUrl) {
-        imageUrl = localStorageImageUrl;
+    const localStorageImageData = await getImageFromLocalStorage(object.Key);
+    let imageUrl, dimensions, versionCount;
+    if (localStorageImageData) {
+        imageUrl = localStorageImageData.dataUrl;
+        dimensions = localStorageImageData.dimensions;
+        versionCount = localStorageImageData.versionCount;
     } else {
         imageUrl = isImage ? getSignedUrl(object.Key, object.VersionId) : 'file_icon.svg';
 
@@ -260,16 +262,15 @@ async function renderImage(object) {
             const response = await fetch(imageUrl);
             const blob = await response.blob();
             const dataUrl = await blobToDataURL(blob);
-            saveImageToLocalStorage(object.Key, dataUrl);
+            dimensions = await getImageDimensions(imageUrl);
+            versionCount = await getObjectVersionCount(objectKey);
+            saveImageToLocalStorage(object.Key, dataUrl, dimensions, versionCount);
         }
     }
 
     let versionCountText = '';
-    if (versioningEnabled) {
-        const versionCount = await getObjectVersionCount(objectKey);
-        if (versionCount > 1) {
-            versionCountText = `(${versionCount} rev)`;
-        }
+    if (versioningEnabled && (versionCount > 1)) {
+        versionCountText = `(${versionCount} rev)`;
     }
 
     return `
@@ -376,10 +377,12 @@ async function displayImageInfo(imageInfo) {
 }
 
 // saving images in local storage
-function saveImageToLocalStorage(key, dataUrl, expiration = 24 * 60 * 60 * 1000) {
+function saveImageToLocalStorage(key, dataUrl, dimensions, versionCount, expiration = 24 * 60 * 60 * 1000) {
     const now = new Date().getTime();
     const imageData = {
         dataUrl: dataUrl,
+        dimensions: dimensions,
+        versionCount: versionCount,
         timestamp: now + expiration,
     };
     localStorage.setItem(key, JSON.stringify(imageData));
@@ -397,7 +400,7 @@ async function getImageFromLocalStorage(key) {
         return null;
     }
 
-    return imageData.dataUrl;
+    return imageData;
 }
 
 function blobToDataURL(blob) {
