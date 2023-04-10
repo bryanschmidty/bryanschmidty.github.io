@@ -445,11 +445,6 @@ async function saveImageToLocalStorage(key, versionId, dataUrl, dimensions, expi
                     // Update the existing version data in the "versions" array
                     existingData.versions[versionIndex] = newVersionData;
                 }
-
-                // If versionId is not null and matches the current version, break the loop
-                if (versionId !== null) {
-                    break;
-                }
             } else if (versionIndex === -1) {
                 // If the current version doesn't exist in the "versions" array, create an empty entry
                 existingData.versions.push({ versionId: currentVersionId });
@@ -484,7 +479,16 @@ async function getImageFromLocalStorage(key, revisionId = null) {
     }
 
     // Get the imageData object for the specified revision or the latest data
-    const imageData = revisionId ? existingData.revisions[revisionId] : existingData;
+    let imageData;
+    if (versioningEnabled) {
+        if (revisionId) {
+            imageData = existingData.versions.find(v => v.versionId === revisionId);
+        } else {
+            imageData = existingData.versions.find(v => v.dataUrl); // Find the first version with dataUrl
+        }
+    } else {
+        imageData = existingData;
+    }
 
     return imageData;
 }
