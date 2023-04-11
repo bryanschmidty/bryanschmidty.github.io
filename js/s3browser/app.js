@@ -419,7 +419,15 @@ async function saveImageToIndexedDB(key, versionId, imageUrl, expiration = 24 * 
     };
 
     // Get existing data from IndexedDB
-    const existingData = await getImageFromIndexedDB(key);
+    let existingData = await getImageFromIndexedDB(key);
+
+    if (!existingData) {
+        existingData = {
+            key: key,
+            timestamp: now + expiration,
+            versions: versioningEnabled ? [] : null,
+        };
+    }
 
     let imageData;
     if (versioningEnabled) {
