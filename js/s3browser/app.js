@@ -20,7 +20,6 @@ async function fetchAllObjects(prefix, accumulatedObjects = [], accumulatedPrefi
 
         try {
             const data = await s3.listObjects(params).promise();
-            accumulatedObjects.push(...data.Contents);
             accumulatedPrefixes.push(...data.CommonPrefixes);
 
             if (versioningEnabled) {
@@ -36,7 +35,9 @@ async function fetchAllObjects(prefix, accumulatedObjects = [], accumulatedPrefi
                 );
 
                 // Replace the original objects with the objects containing version information
-                accumulatedObjects = [...accumulatedPrefixes, ...objectsWithVersions];
+                accumulatedObjects.push(...objectsWithVersions);
+            } else {
+                accumulatedObjects.push(...data.Contents);
             }
 
             if (data.IsTruncated) {
@@ -45,7 +46,8 @@ async function fetchAllObjects(prefix, accumulatedObjects = [], accumulatedPrefi
                     .then((result) => resolve(result))
                     .catch((error) => reject(error));
             } else {
-                resolve({ Contents: accumulatedObjects, CommonPrefixes: accumulatedPrefixes });
+                let newVar = { Contents: accumulatedObjects, CommonPrefixes: accumulatedPrefixes };
+                resolve(newVar);
             }
         } catch (error) {
             reject(error);
@@ -267,8 +269,8 @@ async function renderImage(object) {
     const imageName = object.Key.split('/').pop();
     const latestVersion = getLatestVersionId(object);
 
-    const localStorageImageData = await getImageFromLocalStorage(object.Key, latestVersion);
-    let imageUrl, dimensions, versionCount;
+    let localStorageImageData = await getImageFromLocalStorage(object.Key, latestVersion);
+    let imageUrl, versionCount;
     if (localStorageImageData) {
         imageUrl = localStorageImageData.dataUrl;
         versionCount = localStorageImageData.versionCount;
@@ -277,11 +279,8 @@ async function renderImage(object) {
 
         // Cache the image to localStorage if it's an image
         if (isImage) {
-            const response = await fetch(imageUrl);
-            const blob = await response.blob();
-            const dataUrl = await blobToDataURL(blob);
-            dimensions = await getImageDimensions(imageUrl);
-            saveImageToLocalStorage(object.Key, latestVersion, dataUrl, dimensions);
+            localStorageImageData = await saveImageToLocalStorage(object.Key, latestVersion, imageUrl);
+            versionCount = localStorageImageData.versions.length;
         }
     }
 
@@ -407,7 +406,12 @@ async function displayImageInfo(imageInfo) {
 }
 
 // saving images in local storage
-async function saveImageToLocalStorage(key, versionId, dataUrl, dimensions, expiration = 24 * 60 * 60 * 1000) {
+async function saveImageToLocalStorage(key, versionId, imageUrl, expiration = 24 * 60 * 60 * 1000) {
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+    const dataUrl = await blobToDataURL(blob);
+    const dimensions = await getImageDimensions(imageUrl);
+
     const now = new Date().getTime();
     const keyData = {
         timestamp: now + expiration,
@@ -464,6 +468,8 @@ async function saveImageToLocalStorage(key, versionId, dataUrl, dimensions, expi
     }
 
     localStorage.setItem(key, JSON.stringify(existingData));
+
+    return existingData;
 }
 
 async function getImageFromLocalStorage(key, revisionId = null) {
@@ -479,8 +485,9 @@ async function getImageFromLocalStorage(key, revisionId = null) {
     }
 
     // Get the imageData object for the specified revision or the latest data
-    let imageData;
+    let imageData, versionCount;
     if (versioningEnabled) {
+        versionCount = existingData.versions.length;
         if (revisionId) {
             imageData = existingData.versions.find(v => v.versionId === revisionId);
         } else {
@@ -490,7 +497,10 @@ async function getImageFromLocalStorage(key, revisionId = null) {
         imageData = existingData;
     }
 
-    return imageData;
+    return {
+        ...imageData,
+        versionCount: versionCount
+    };
 }
 
 function blobToDataURL(blob) {
@@ -548,8 +558,6 @@ async function updateConfig(bucketName, region, accessKeyId, secretAccessKey, im
     document.getElementById('gallery-image-size').value = imageSize;
 
     versioningEnabled = await isVersioningEnabled();
-
-    listObjects();
 }
 
 function updateImageSize(imageSize) {
