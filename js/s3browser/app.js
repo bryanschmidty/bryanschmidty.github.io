@@ -173,9 +173,9 @@ function formatBytes(bytes, decimals = 2) {
 function updateFooter(folderCount, fileCount, totalFileSize) {
     const footerInfo = document.getElementById('footer-info');
     footerInfo.innerHTML = `
-        Folders: <span class="footer-count">${folderCount}</span>
-        Files: <span class="footer-count">${fileCount}</span>
-        Total Size: <span class="footer-size">${totalFileSize}</span>
+        <span class="footer-count">${folderCount}</span> Folders | 
+        <span class="footer-count">${fileCount}</span> Files |
+        <span class="footer-size">${totalFileSize}</span>
     `;
 }
 
