@@ -269,7 +269,7 @@ async function renderImage(object) {
     const imageName = object.Key.split('/').pop();
     const latestVersion = getLatestVersionId(object);
 
-    let localStorageImageData = await getImageFromLocalStorage(object.Key, latestVersion);
+    let localStorageImageData = await getImageFromIndexedDB(object.Key, latestVersion);
     let imageUrl, versionCount;
     if (localStorageImageData) {
         imageUrl = localStorageImageData.dataUrl;
@@ -279,7 +279,7 @@ async function renderImage(object) {
 
         // Cache the image to localStorage if it's an image
         if (isImage) {
-            localStorageImageData = await saveImageToLocalStorage(object.Key, latestVersion, imageUrl);
+            localStorageImageData = await saveImageToIndexedDB(object.Key, latestVersion, imageUrl);
             versionCount = localStorageImageData.versions.length;
         }
     }
@@ -406,7 +406,7 @@ async function displayImageInfo(imageInfo) {
 }
 
 // saving images in local storage
-async function saveImageToLocalStorage(key, versionId, imageUrl, expiration = 24 * 60 * 60 * 1000) {
+async function saveImageToIndexedDB(key, versionId, imageUrl, expiration = 24 * 60 * 60 * 1000) {
     const response = await fetch(imageUrl);
     const blob = await response.blob();
     const dataUrl = await blobToDataURL(blob);
@@ -414,13 +414,14 @@ async function saveImageToLocalStorage(key, versionId, imageUrl, expiration = 24
 
     const now = new Date().getTime();
     const keyData = {
+        key: key,
         timestamp: now + expiration,
     };
 
-    // Get existing data from local storage
-    const existingDataJson = localStorage.getItem(key);
-    let existingData = existingDataJson ? JSON.parse(existingDataJson) : {};
+    // Get existing data from IndexedDB
+    const existingData = await getImageFromIndexedDB(key);
 
+    let imageData;
     if (versioningEnabled) {
         // Fetch the object versions
         const versions = await getObjectVersions(key);
@@ -436,7 +437,7 @@ async function saveImageToLocalStorage(key, versionId, imageUrl, expiration = 24
 
             // If versionId is null or matches the current version, save the other parameters
             if (versionId === null || versionId === currentVersionId) {
-                const newVersionData = {
+                imageData = {
                     versionId: currentVersionId,
                     dataUrl: dataUrl,
                     dimensions: dimensions
@@ -444,63 +445,74 @@ async function saveImageToLocalStorage(key, versionId, imageUrl, expiration = 24
 
                 if (versionIndex === -1) {
                     // Add the new version data to the "versions" array if it doesn't exist
-                    existingData.versions.push(newVersionData);
+                    existingData.versions.push(imageData);
                 } else {
                     // Update the existing version data in the "versions" array
-                    existingData.versions[versionIndex] = newVersionData;
+                    existingData.versions[versionIndex] = imageData;
                 }
             } else if (versionIndex === -1) {
                 // If the current version doesn't exist in the "versions" array, create an empty entry
                 existingData.versions.push({ versionId: currentVersionId });
             }
         }
-        existingData = {
-            ...existingData,
-            ...keyData
-        };
+        existingData.timestamp = keyData.timestamp;
     } else {
         // Store the imageData object directly if versioning is not enabled
-        existingData = {
-            ...keyData,
+        imageData = {
             dataUrl: dataUrl,
             dimensions: dimensions
         };
+        existingData.timestamp = keyData.timestamp;
+        existingData.data = imageData;
     }
 
-    localStorage.setItem(key, JSON.stringify(existingData));
+    // Save the updated data to IndexedDB
+    const db = await openIndexedDB();
+    const transaction = db.transaction(["images"], "readwrite");
+    const objectStore = transaction.objectStore("images");
+    objectStore.put(existingData);
 
     return existingData;
 }
 
-async function getImageFromLocalStorage(key, revisionId = null) {
-    const existingDataJson = localStorage.getItem(key);
-    if (!existingDataJson) return null;
+async function getImageFromIndexedDB(key, revisionId = null) {
+    const db = await openIndexedDB();
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction(["images"], "readonly");
+        const objectStore = transaction.objectStore("images");
+        const request = objectStore.get(key);
 
-    const existingData = JSON.parse(existingDataJson);
-    const now = new Date().getTime();
+        request.onerror = (event) => {
+            console.error("Error retrieving image data from IndexedDB:", event);
+            reject(event);
+        };
 
-    if (existingData.timestamp < now) {
-        localStorage.removeItem(key);
-        return null;
-    }
+        request.onsuccess = (event) => {
+            const existingData = event.target.result;
 
-    // Get the imageData object for the specified revision or the latest data
-    let imageData, versionCount;
-    if (versioningEnabled) {
-        versionCount = existingData.versions.length;
-        if (revisionId) {
-            imageData = existingData.versions.find(v => v.versionId === revisionId);
-        } else {
-            imageData = existingData.versions.find(v => v.dataUrl); // Find the first version with dataUrl
-        }
-    } else {
-        imageData = existingData;
-    }
+            if (!existingData || existingData.timestamp < new Date().getTime()) {
+                resolve(null);
+                return;
+            }
 
-    return {
-        ...imageData,
-        versionCount: versionCount
-    };
+            let imageData, versionCount;
+            if (versioningEnabled) {
+                versionCount = existingData.versions.length;
+                if (revisionId) {
+                    imageData = existingData.versions.find((v) => v.versionId === revisionId);
+                } else {
+                    imageData = existingData.versions.find((v) => v.dataUrl); // Find the first version with dataUrl
+                }
+            } else {
+                imageData = existingData.data;
+            }
+
+            resolve({
+                ...imageData,
+                versionCount: versionCount,
+            });
+        };
+    });
 }
 
 function blobToDataURL(blob) {
@@ -508,6 +520,26 @@ function blobToDataURL(blob) {
         const reader = new FileReader();
         reader.onloadend = () => resolve(reader.result);
         reader.readAsDataURL(blob);
+    });
+}
+
+function openIndexedDB() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open("S3Gallery", 1);
+
+        request.onerror = (event) => {
+            console.error("Error opening IndexedDB:", event);
+            reject(event);
+        };
+
+        request.onsuccess = (event) => {
+            resolve(event.target.result);
+        };
+
+        request.onupgradeneeded = (event) => {
+            const db = event.target.result;
+            db.createObjectStore("images", { keyPath: "key" });
+        };
     });
 }
 
