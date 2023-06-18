@@ -10,19 +10,19 @@ function displayItems() {
 
         const verbCell = document.createElement("td");
         verbCell.style.verticalAlign = "top";
-        renderElement(verbCell, itemData.item, index, true);
+        renderElement(verbCell, itemData.item, itemData.id, true);
         row.appendChild(verbCell);
 
         const objectCell = document.createElement("td");
         objectCell.style.verticalAlign = "top";
-        renderChildren(objectCell, index);
+        renderChildren(objectCell, itemData.id);
         row.appendChild(objectCell);
 
         itemsList.appendChild(row);
     });
 }
 
-function renderElement(parentElement, elementText, index, isVerb) {
+function renderElement(parentElement, elementText, id, isVerb) {
     const elementWrapper = document.createElement("div");
     elementWrapper.style.display = "flex"; // Add display flex to keep elements on the same line
 
@@ -38,39 +38,39 @@ function renderElement(parentElement, elementText, index, isVerb) {
     const editButton = document.createElement("button");
     editButton.textContent = "Edit";
     editButton.addEventListener("click", () => {
-        editElement(element, elementText, index, isVerb);
+        editElement(element, elementText, id, isVerb);
     });
     elementWrapper.appendChild(editButton);
 
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Delete";
     deleteButton.addEventListener("click", () => {
-        deleteElement(index, isVerb);
+        deleteElement(id, isVerb);
     });
     elementWrapper.appendChild(deleteButton);
 
     parentElement.appendChild(elementWrapper);
 }
 
-function renderChildren(parentElement, verbIndex) {
+function renderChildren(parentElement, verbId) {
     const items = JSON.parse(localStorage.getItem("items")) || [];
-    const itemData = items[verbIndex];
+    const itemData = items.find(item => item.id === verbId);
 
     parentElement.innerHTML = "";
-    itemData.children.forEach((child, childIndex) => {
-        renderElement(parentElement, child, childIndex, false);
+    itemData.children.forEach((child) => {
+        renderElement(parentElement, child.text, child.id, false);
     });
 
     const addChildButton = document.createElement("button");
     addChildButton.textContent = "Add Child";
     addChildButton.addEventListener("click", () => {
-        const childIndex = addChild(verbIndex);
-        editElement(parentElement, "", childIndex, false);
+        const childId = addChild(verbId);
+        editElement(parentElement, "", childId, false);
     });
     parentElement.appendChild(addChildButton);
 }
 
-function editElement(element, elementText, index, isVerb) {
+function editElement(element, elementText, id, isVerb) {
     const parentElement = element.parentElement;
     parentElement.innerHTML = "";
 
@@ -82,38 +82,44 @@ function editElement(element, elementText, index, isVerb) {
     const saveButton = document.createElement("button");
     saveButton.textContent = "Save";
     saveButton.addEventListener("click", () => {
-        if (isVerb) {
-            updateElement(input, index, null, isVerb);
-            renderElement(parentElement, input.value, index, isVerb);
+        if (isVerb && id === null) {
+            addVerb(input.value);
         } else {
-            const verbIndex = parentElement.parentElement.parentElement.rowIndex - 1;
-            updateElement(input, verbIndex, index, isVerb);
-            renderElement(parentElement, input.value, index, isVerb);
+            updateElement(input, id, isVerb);
         }
+        displayItems(); // Re-render everything after saving
     });
     parentElement.appendChild(saveButton);
 }
 
-function updateElement(input, index, childIndex, isVerb) {
+function updateElement(input, index, id, isVerb) {
     const newValue = input.value;
     if (isVerb) {
-        updateVerb(index, newValue);
+        updateVerb(id, newValue);
     } else {
-        updateChild(index, childIndex, newValue);
+        updateChild(id, newValue);
     }
 }
 
-function updateVerb(index, newValue) {
+function updateVerb(id, newValue) {
     const items = JSON.parse(localStorage.getItem("items")) || [];
-    items[index].item = newValue;
+    const itemIndex = items.findIndex(item => item.id === id);
+    items[itemIndex].item = newValue;
     localStorage.setItem("items", JSON.stringify(items));
     displayItems();
 }
 
-function updateChild(verbIndex, childIndex, newChild) {
+function updateChild(childId, newValue) {
     const items = JSON.parse(localStorage.getItem("items")) || [];
-    items[verbIndex].children[childIndex] = newChild;
+    for (const item of items) {
+        const childIndex = item.children.findIndex(child => child.id === childId);
+        if (childIndex !== -1) {
+            item.children[childIndex].text = newValue;
+            break;
+        }
+    }
     localStorage.setItem("items", JSON.stringify(items));
+    displayItems();
 }
 
 function deleteElement(index, isVerb) {
@@ -191,11 +197,13 @@ function editChild(childElement, child, verbIndex, childIndex) {
     childElement.appendChild(saveButton);
 }
 
-function addChild(verbIndex) {
+function addChild(verbId) {
     const items = JSON.parse(localStorage.getItem("items")) || [];
-    items[verbIndex].children.push("");
+    const itemIndex = items.findIndex(item => item.id === verbId);
+    const childId = Date.now() + Math.random();
+    items[itemIndex].children.push({ id: childId, text: "" });
     localStorage.setItem("items", JSON.stringify(items));
-    return items[verbIndex].children.length - 1;
+    return childId;
 }
 
 function addObject(verbIndex, object) {
@@ -227,14 +235,16 @@ document.getElementById("add-verb").addEventListener("click", () => {
 
     itemsList.appendChild(newRow);
 
-    editElement(verbCell, "", itemsList.childElementCount - 1, true);
+    editElement(verbCell, "", null, true);
 });
 
-function addVerb(verb, children) {
+function addVerb(verb) {
     const items = JSON.parse(localStorage.getItem("items")) || [];
-    items.push({ item: verb, children });
+    const verbId = Date.now(); // Use a timestamp as a unique identifier
+    items.push({ id: verbId, item: verb, children: [] });
     localStorage.setItem("items", JSON.stringify(items));
     displayItems();
+    return verbId;
 }
 
 // Initial display of items
