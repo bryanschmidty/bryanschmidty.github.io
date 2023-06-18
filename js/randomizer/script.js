@@ -24,10 +24,10 @@ function displayItems() {
 
 function renderElement(parentElement, elementText, id, isVerb) {
     const elementWrapper = document.createElement("div");
-    elementWrapper.style.display = "flex"; // Add display flex to keep elements on the same line
+    elementWrapper.classList.add("element-wrapper");
 
     const element = document.createElement("div");
-    element.classList.add("element"); // Add a CSS class to the element div
+    element.classList.add("element");
 
     const text = document.createElement("span");
     text.textContent = elementText;
@@ -57,17 +57,54 @@ function renderChildren(parentElement, verbId) {
     const itemData = items.find(item => item.id === verbId);
 
     parentElement.innerHTML = "";
-    itemData.children.forEach((child) => {
-        renderElement(parentElement, child.text, child.id, false);
+    itemData.children.forEach((child, childIndex) => {
+        renderElement(parentElement, child.text, { verbId, childIndex }, false);
     });
 
     const addChildButton = document.createElement("button");
     addChildButton.textContent = "Add Child";
     addChildButton.addEventListener("click", () => {
-        const childId = addChild(verbId);
-        editElement(parentElement, "", childId, false);
+        const childIndex = addChild(verbId);
+        editChild(parentElement, "", { verbId, childIndex });
     });
     parentElement.appendChild(addChildButton);
+}
+
+function editVerb(element, elementText, id) {
+    const parentElement = element.parentElement;
+    parentElement.innerHTML = "";
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = elementText;
+    parentElement.appendChild(input);
+
+    const saveButton = document.createElement("button");
+    saveButton.textContent = "Save";
+    saveButton.addEventListener("click", () => {
+        if (id === null) {
+            addVerb(input.value);
+        } else {
+            updateVerb(id, input.value);
+        }
+        displayItems(); // Re-render everything after saving
+    });
+    parentElement.appendChild(saveButton);
+}
+
+function editChild(parentElement, elementText, id) {
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = elementText;
+    parentElement.insertBefore(input, parentElement.lastChild);
+
+    const saveButton = document.createElement("button");
+    saveButton.textContent = "Save";
+    saveButton.addEventListener("click", () => {
+        updateChild(id.verbId, id.childIndex, input.value);
+        displayItems(); // Re-render everything after saving
+    });
+    parentElement.insertBefore(saveButton, parentElement.lastChild);
 }
 
 function editElement(element, elementText, id, isVerb) {
@@ -92,12 +129,12 @@ function editElement(element, elementText, id, isVerb) {
     parentElement.appendChild(saveButton);
 }
 
-function updateElement(input, index, id, isVerb) {
+function updateElement(input, id, isVerb) {
     const newValue = input.value;
     if (isVerb) {
         updateVerb(id, newValue);
     } else {
-        updateChild(id, newValue);
+        updateChild(id.itemIndex, id.childIndex, newValue);
     }
 }
 
@@ -122,11 +159,21 @@ function updateChild(childId, newValue) {
     displayItems();
 }
 
-function deleteElement(index, isVerb) {
+function deleteElement(id, isVerb) {
     if (isVerb) {
-        deleteVerb(index);
+        deleteVerb(id);
     } else {
-        deleteChild(index);
+        const items = JSON.parse(localStorage.getItem("items")) || [];
+        let verbIndex, childIndex;
+        for (let i = 0; i < items.length; i++) {
+            const idx = items[i].children.findIndex(child => child.id === id);
+            if (idx !== -1) {
+                verbIndex = i;
+                childIndex = idx;
+                break;
+            }
+        }
+        deleteChild(verbIndex, childIndex);
     }
 }
 
@@ -151,52 +198,6 @@ function saveButtonHandler(childElement, childInput, verbIndex, childIndex) {
     renderChildren(childElement.parentElement, verbIndex);
 }
 
-function renderChild(parentElement, child, verbIndex, childIndex) {
-    const childWrapper = document.createElement("div");
-    childWrapper.style.display = "flex"; // Add display flex to keep elements on the same line
-
-    const childElement = document.createElement("div");
-    childElement.classList.add("child-element"); // Add a CSS class to the childElement div
-
-    const childText = document.createElement("span");
-    childText.textContent = child;
-    childElement.appendChild(childText);
-
-    childWrapper.appendChild(childElement);
-
-    const editButton = document.createElement("button");
-    editButton.textContent = "Edit";
-    editButton.addEventListener("click", () => {
-        editChild(childElement, child, verbIndex, childIndex);
-    });
-    childWrapper.appendChild(editButton);
-
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "Delete";
-    deleteButton.addEventListener("click", () => {
-        deleteChild(verbIndex, childIndex);
-    });
-    childWrapper.appendChild(deleteButton);
-
-    parentElement.appendChild(childWrapper);
-}
-
-function editChild(childElement, child, verbIndex, childIndex) {
-    childElement.innerHTML = "";
-
-    const childInput = document.createElement("input");
-    childInput.type = "text";
-    childInput.value = child;
-    childElement.appendChild(childInput);
-
-    const saveButton = document.createElement("button");
-    saveButton.textContent = "Save";
-    saveButton.addEventListener("click", () => {
-        saveButtonHandler(childElement, childInput, verbIndex, childIndex);
-    });
-    childElement.appendChild(saveButton);
-}
-
 function addChild(verbId) {
     const items = JSON.parse(localStorage.getItem("items")) || [];
     const itemIndex = items.findIndex(item => item.id === verbId);
@@ -211,10 +212,6 @@ function addObject(verbIndex, object) {
     items[verbIndex].children.push(object);
     localStorage.setItem("items", JSON.stringify(items));
     displayItems();
-}
-
-function editItem(verbIndex, childIndex) {
-    // Implement the edit functionality
 }
 
 function deleteItem(verbIndex, childIndex) {
@@ -235,7 +232,7 @@ document.getElementById("add-verb").addEventListener("click", () => {
 
     itemsList.appendChild(newRow);
 
-    editElement(verbCell, "", null, true);
+    editVerb(verbCell, "", null);
 });
 
 function addVerb(verb) {

@@ -35,3 +35,7 @@ body {
 .element {
     width: 200px;
 }
+
+.element-wrapper {
+    display: flex;
+}
