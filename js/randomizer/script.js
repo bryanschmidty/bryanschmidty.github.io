@@ -1,29 +1,3 @@
-// Get the modal
-var modal = document.getElementById("myModal");
-
-// Get the button that opens the modal
-var btn = document.getElementById("config-button");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks on the button, open the modal
-btn.onclick = function() {
-    modal.style.display = "block";
-};
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = "none";
-};
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-};
-
 const itemsTable = document.getElementById("items-table");
 const itemsList = document.getElementById("items-list");
 
@@ -39,7 +13,7 @@ function displayItems() {
 
         const verbCell = document.createElement("td");
         verbCell.style.verticalAlign = "top";
-        renderElement(verbCell, verb.name, verb.id, true);
+        renderElement(verbCell, verb);
         row.appendChild(verbCell);
 
         const objectCell = document.createElement("td");
@@ -51,14 +25,16 @@ function displayItems() {
     });
 }
 
-function renderElement(parentElement, elementText, id, isVerb) {
+function renderElement(parentElement, item) {
     const elementWrapper = document.createElement("div");
     elementWrapper.classList.add("element-wrapper");
 
     const element = document.createElement("div");
     element.classList.add("element");
+    element.classList.add("element");
+    element.setAttribute('data-child-id', item?.id);
 
-    if (elementText === undefined) {
+    if (item?.name === undefined) {
         const addChildButton = document.createElement("button");
         addChildButton.textContent = "Add Child";
         addChildButton.addEventListener("click", () => {
@@ -69,23 +45,44 @@ function renderElement(parentElement, elementText, id, isVerb) {
         elementWrapper.appendChild(element);
     } else {
         const text = document.createElement("span");
-        text.textContent = elementText;
+        text.textContent = item.name;
         element.appendChild(text);
         elementWrapper.appendChild(element);
 
         const editButton = document.createElement("button");
         editButton.textContent = "Edit";
         editButton.addEventListener("click", () => {
-            editChild(element, elementText, id);
+            editChild(element, item.name, item.id);
         });
         elementWrapper.appendChild(editButton);
 
         const deleteButton = document.createElement("button");
         deleteButton.textContent = "Delete";
         deleteButton.addEventListener("click", () => {
-            deleteElement(id, isVerb);
+            const items = JSON.parse(localStorage.getItem("items")) || [];
+            const itemIndex = items.findIndex(object => object.id === item.id);
+            if (itemIndex !== -1) {
+                items.splice(itemIndex, 1);
+                localStorage.setItem("items", JSON.stringify(items));
+            }
+            displayItems();
         });
         elementWrapper.appendChild(deleteButton);
+
+        if (item.shown) {
+            const resetButton = document.createElement("button");
+            resetButton.textContent = "Reset";
+            resetButton.addEventListener("click", () => {
+                const items = JSON.parse(localStorage.getItem("items")) || [];
+                const itemIndex = items.findIndex(object => object.id === item.id);
+                if (itemIndex !== -1) {
+                    items[itemIndex].shown = false;
+                    localStorage.setItem("items", JSON.stringify(items));
+                }
+                displayItems();
+            });
+            elementWrapper.appendChild(resetButton);
+        }
 
     }
     parentElement.appendChild(elementWrapper);
@@ -93,13 +90,11 @@ function renderElement(parentElement, elementText, id, isVerb) {
 
 function renderChildren(parentElement, verbId) {
     const items = JSON.parse(localStorage.getItem("items")) || [];
-    const children = items.filter(item => item.parentId == verbId);
-    console.log(verbId, children)
+    const children = items.filter(item => parseFloat(item.parentId) === verbId);
 
     parentElement.innerHTML = "";
     children.forEach(child => {
-        console.log(child)
-        renderElement(parentElement, child.name, child.id, false);
+        renderElement(parentElement, child);
     });
 
     renderElement(parentElement);
@@ -182,16 +177,6 @@ function updateChild(id, newValue, verbId) {
     displayItems();
 }
 
-function deleteElement(id, isVerb) {
-    const items = JSON.parse(localStorage.getItem("items")) || [];
-    const itemIndex = items.findIndex(item => item.id === id);
-    if (itemIndex !== -1) {
-        items.splice(itemIndex, 1);
-        localStorage.setItem("items", JSON.stringify(items));
-    }
-    displayItems();
-}
-
 function addChild(verbId) {
     const items = JSON.parse(localStorage.getItem("items")) || [];
     const childId = Date.now() + Math.random();
@@ -227,57 +212,83 @@ displayItems();
 
 
 // canvas
-// Add this to the existing script.js
-
-const canvas = document.getElementById("slots-canvas");
-const ctx = canvas.getContext("2d");
+let newWindowCanvas;
+let newWindowCtx;
 let animationInterval;
 let verbs;
 let children;
 let currentVerbIndex;
 let currentChildIndex;
 
-function drawBoxes() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = "white";
-    ctx.strokeRect(50, 50, 150, 100);
-    ctx.strokeRect(200, 50, 150, 100);
+function drawText(item) {
+
+    // If there is a new window canvas, also draw on that
+    if (newWindowCanvas && newWindowCtx) {
+        // Define center of the new window canvas
+        const newWindowXCenter = newWindowCtx.canvas.width / 2;
+        const newWindowYCenter = newWindowCtx.canvas.height / 2;
+
+        newWindowCtx.clearRect(0, 0, newWindowCanvas.width, newWindowCanvas.height);
+        newWindowCtx.font = "20px Arial";
+        newWindowCtx.fillStyle = "white";
+        newWindowCtx.textAlign = "center";
+        newWindowCtx.textBaseline = "middle";
+        newWindowCtx.fillText(item, newWindowXCenter, newWindowYCenter);
+    }
 }
 
-function drawText() {
-    ctx.font = "20px Arial";
-    ctx.fillStyle = "white";
-    ctx.fillText(verbs[currentVerbIndex].name, 75, 100);
-    ctx.fillText(children[currentChildIndex].name, 225, 100);
-}
 
 function randomize() {
-    const shownChildren = children.filter(child => !child.shown);
-    if (shownChildren.length === 0) return;
+    const items = JSON.parse(localStorage.getItem("items")) || [];
+    children = items.filter(item => item.parentId !== null && !item.shown);
+    if (children.length === 0) return;
+
+    const comboNames = children.map(child => {
+        const verb = items.find(item => item.id === parseFloat(child.parentId));
+        return { id: child.id, name: verb.name + ' ' + child.name };
+    });
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    shuffle(comboNames);
 
     let speed = 50;
     let slowdown = 1.1;
     const startTime = Date.now();
+    let currentIndex = 0;
     clearInterval(animationInterval);
 
     function animate() {
-        drawBoxes();
-        currentVerbIndex = (currentVerbIndex + 1) % verbs.length;
-        currentChildIndex = (currentChildIndex + 1) % shownChildren.length;
-        drawText();
+        drawText(comboNames[currentIndex].name);
 
         const elapsedTime = Date.now() - startTime;
         if (elapsedTime >= 5000) {
             clearInterval(animationInterval);
-            shownChildren[currentChildIndex].shown = true;
+            markChildAsShown(comboNames[currentIndex].id);
         } else {
             speed *= slowdown;
+            currentIndex = (currentIndex + 1) % comboNames.length;
             clearInterval(animationInterval);
             animationInterval = setInterval(animate, speed);
         }
     }
 
     animationInterval = setInterval(animate, speed);
+}
+
+function markChildAsShown(id) {
+    const items = JSON.parse(localStorage.getItem("items")) || [];
+    const childIndex = items.findIndex(item => item.id === id);
+    if (childIndex !== -1) {
+        items[childIndex].shown = true;
+        localStorage.setItem("items", JSON.stringify(items));
+    }
+    displayItems();
 }
 
 function resetChildren() {
@@ -301,4 +312,20 @@ document.getElementById("randomize-button").addEventListener("click", () => {
 
 document.getElementById("reset-children").addEventListener("click", resetChildren);
 
-drawBoxes();
+function openNewWindow() {
+    const newWindow = window.open("", "_blank", "width=400,height=200,top=100,left=100,toolbar=no,menubar=no,location=no,status=no");
+    if (!newWindow) return;
+
+    newWindowCanvas = newWindow.document.createElement("canvas");
+    newWindowCanvas.width = 400;  // set appropriate width
+    newWindowCanvas.height = 200;  // set appropriate height
+    newWindowCtx = newWindowCanvas.getContext("2d");
+    newWindow.document.body.appendChild(newWindowCanvas);
+    newWindow.document.body.style.backgroundColor = "black";
+    newWindow.document.body.style.margin = "0";
+    newWindow.document.body.style.display = "flex";
+    newWindow.document.body.style.justifyContent = "center";
+    newWindow.document.body.style.alignItems = "center";
+}
+
+document.getElementById("open-new-window").addEventListener("click", openNewWindow);
