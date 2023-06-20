@@ -54,7 +54,7 @@ function renderElement(parentElement, item) {
 
     if (item?.name === undefined) {
         const addChildButton = document.createElement("button");
-        addChildButton.textContent = "Add Child";
+        addChildButton.textContent = "Add Object";
         addChildButton.addEventListener("click", () => {
             addChildButton.remove();
             editChild(element, "", null);

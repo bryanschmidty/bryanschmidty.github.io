@@ -97,3 +97,23 @@ body {
     margin: 10px auto;
     cursor: pointer;
 }
+/* Add these styles to styles.css */
+.font-settings-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.font-settings {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+h2 {
+    text-align: center;
+}
+
