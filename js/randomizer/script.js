@@ -256,7 +256,8 @@ function randomize() {
     if (shownChildren.length === 0) return;
 
     let speed = 50;
-    let slowdown = 1;
+    let slowdown = 1.1;
+    const startTime = Date.now();
     clearInterval(animationInterval);
 
     function animate() {
@@ -265,11 +266,12 @@ function randomize() {
         currentChildIndex = (currentChildIndex + 1) % shownChildren.length;
         drawText();
 
-        speed += slowdown;
-        if (speed > 300) {
+        const elapsedTime = Date.now() - startTime;
+        if (elapsedTime >= 5000) {
             clearInterval(animationInterval);
             shownChildren[currentChildIndex].shown = true;
         } else {
+            speed *= slowdown;
             clearInterval(animationInterval);
             animationInterval = setInterval(animate, speed);
         }
