@@ -7,19 +7,24 @@
   <title>Dynamic Form</title>
 </head>
 <body>
+<button id="config-button" style="margin: 10px;">Config</button>
 <div class="container">
-  <h1>Enter Items</h1>
   <div class="content">
-    <table id="items-table">
-      <thead>
-      <tr>
-        <th>Verb</th>
-        <th>Object</th>
-      </tr>
-      </thead>
-      <tbody id="items-list"></tbody>
-    </table>
-    <button id="add-verb">Add Verb</button>
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <table id="items-table">
+          <thead>
+          <tr>
+            <th>Verb</th>
+            <th>Object</th>
+          </tr>
+          </thead>
+          <tbody id="items-list"></tbody>
+        </table>
+        <button id="add-verb">Add Verb</button>
+      </div>
+    </div>
   </div>
 </div>
 <script src="script.js"></script>
