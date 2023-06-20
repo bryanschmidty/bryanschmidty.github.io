@@ -259,8 +259,7 @@ function randomize() {
     let slowdown = 1;
     clearInterval(animationInterval);
 
-    animationInterval = setInterval(() => {
-        console.log(speed)
+    function animate() {
         drawBoxes();
         currentVerbIndex = (currentVerbIndex + 1) % verbs.length;
         currentChildIndex = (currentChildIndex + 1) % shownChildren.length;
@@ -272,9 +271,11 @@ function randomize() {
             shownChildren[currentChildIndex].shown = true;
         } else {
             clearInterval(animationInterval);
-            animationInterval = setInterval(randomize, speed);
+            animationInterval = setInterval(animate, speed);
         }
-    }, speed);
+    }
+
+    animationInterval = setInterval(animate, speed);
 }
 
 function resetChildren() {
