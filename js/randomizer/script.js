@@ -1,3 +1,21 @@
+function populateFontDropdown() {
+    const fontDropdown = document.getElementById("font-dropdown");
+    const fonts = [
+        "Arial", "Verdana", "Helvetica", "Tahoma", "Trebuchet MS", "Times New Roman",
+        "Georgia", "Garamond", "Courier New", "Brush Script MT", "Lucida Sans Unicode",
+        "Comic Sans MS", "Impact", "Palatino Linotype", "Arial Black", "Bookman Old Style"
+    ];
+
+    fonts.forEach(font => {
+        const option = document.createElement("option");
+        option.value = font;
+        option.textContent = font;
+        fontDropdown.appendChild(option);
+    });
+}
+
+populateFontDropdown();
+
 const itemsTable = document.getElementById("items-table");
 const itemsList = document.getElementById("items-list");
 
@@ -220,24 +238,6 @@ let children;
 let currentVerbIndex;
 let currentChildIndex;
 
-function drawText(item) {
-
-    // If there is a new window canvas, also draw on that
-    if (newWindowCanvas && newWindowCtx) {
-        // Define center of the new window canvas
-        const newWindowXCenter = newWindowCtx.canvas.width / 2;
-        const newWindowYCenter = newWindowCtx.canvas.height / 2;
-
-        newWindowCtx.clearRect(0, 0, newWindowCanvas.width, newWindowCanvas.height);
-        newWindowCtx.font = "20px Arial";
-        newWindowCtx.fillStyle = "white";
-        newWindowCtx.textAlign = "center";
-        newWindowCtx.textBaseline = "middle";
-        newWindowCtx.fillText(item, newWindowXCenter, newWindowYCenter);
-    }
-}
-
-
 function randomize() {
     const items = JSON.parse(localStorage.getItem("items")) || [];
     children = items.filter(item => item.parentId !== null && !item.shown);
@@ -313,12 +313,12 @@ document.getElementById("randomize-button").addEventListener("click", () => {
 document.getElementById("reset-children").addEventListener("click", resetChildren);
 
 function openNewWindow() {
-    const newWindow = window.open("", "_blank", "width=400,height=200,top=100,left=100,toolbar=no,menubar=no,location=no,status=no");
+    const newWindow = window.open("", "_blank", "width=800,height=100,top=100,left=100,toolbar=no,menubar=no,location=no,status=no");
     if (!newWindow) return;
 
     newWindowCanvas = newWindow.document.createElement("canvas");
-    newWindowCanvas.width = 400;  // set appropriate width
-    newWindowCanvas.height = 200;  // set appropriate height
+    newWindowCanvas.width = 800;  // set appropriate width
+    newWindowCanvas.height = 100;  // set appropriate height
     newWindowCtx = newWindowCanvas.getContext("2d");
     newWindow.document.body.appendChild(newWindowCanvas);
     newWindow.document.body.style.backgroundColor = "black";
@@ -329,3 +329,53 @@ function openNewWindow() {
 }
 
 document.getElementById("open-new-window").addEventListener("click", openNewWindow);
+
+
+// Add this function to update the example canvas
+function updateExampleCanvas() {
+    const font = document.getElementById("font-dropdown").value;
+    const color = document.getElementById("color-dropdown").value;
+    const size = document.getElementById("size-dropdown").value;
+
+    const canvas = document.getElementById("example-canvas");
+    const ctx = canvas.getContext("2d");
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = `${size}px ${font}`;
+    ctx.fillStyle = color;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("Example", canvas.width / 2, canvas.height / 2);
+
+    localStorage.setItem("fontSettings", JSON.stringify({ font, color, size }));
+}
+
+document.getElementById("font-dropdown").addEventListener("change", updateExampleCanvas);
+document.getElementById("color-dropdown").addEventListener("change", updateExampleCanvas);
+document.getElementById("size-dropdown").addEventListener("change", updateExampleCanvas);
+
+function loadFontSettings() {
+    const fontSettings = JSON.parse(localStorage.getItem("fontSettings"));
+    if (fontSettings) {
+        document.getElementById("font-dropdown").value = fontSettings.font;
+        document.getElementById("color-dropdown").value = fontSettings.color;
+        document.getElementById("size-dropdown").value = fontSettings.size;
+        updateExampleCanvas();
+    }
+}
+
+loadFontSettings();
+
+function drawText(item) {
+    const fontSettings = JSON.parse(localStorage.getItem("fontSettings"));
+    const font = fontSettings.font;
+    const color = fontSettings.color;
+    const size = fontSettings.size;
+
+    newWindowCtx.clearRect(0, 0, newWindowCanvas.width, newWindowCanvas.height);
+    newWindowCtx.font = `${size}px ${font}`;
+    newWindowCtx.fillStyle = color;
+    newWindowCtx.textAlign = "center";
+    newWindowCtx.textBaseline = "middle";
+    newWindowCtx.fillText(item, newWindowCanvas.width / 2, newWindowCanvas.height / 2);
+}
