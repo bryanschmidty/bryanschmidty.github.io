@@ -78,3 +78,22 @@ body {
     text-decoration: none;
     cursor: pointer;
 }
+
+/* Add this to the existing styles.css */
+#slots-canvas {
+    background-color: black;
+    display: block;
+    margin: 0 auto;
+}
+
+#randomize-button {
+    display: block;
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    margin: 10px auto;
+    cursor: pointer;
+}

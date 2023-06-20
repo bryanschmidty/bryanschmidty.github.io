@@ -224,3 +224,78 @@ function addVerb(verb) {
 
 // Initial display of items
 displayItems();
+
+
+// canvas
+// Add this to the existing script.js
+
+const canvas = document.getElementById("slots-canvas");
+const ctx = canvas.getContext("2d");
+let animationInterval;
+let verbs;
+let children;
+let currentVerbIndex;
+let currentChildIndex;
+
+function drawBoxes() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = "white";
+    ctx.strokeRect(50, 50, 150, 100);
+    ctx.strokeRect(200, 50, 150, 100);
+}
+
+function drawText() {
+    ctx.font = "20px Arial";
+    ctx.fillStyle = "white";
+    ctx.fillText(verbs[currentVerbIndex].name, 75, 100);
+    ctx.fillText(children[currentChildIndex].name, 225, 100);
+}
+
+function randomize() {
+    const shownChildren = children.filter(child => !child.shown);
+    if (shownChildren.length === 0) return;
+
+    let speed = 50;
+    let slowdown = 1;
+    clearInterval(animationInterval);
+
+    animationInterval = setInterval(() => {
+        console.log(speed)
+        drawBoxes();
+        currentVerbIndex = (currentVerbIndex + 1) % verbs.length;
+        currentChildIndex = (currentChildIndex + 1) % shownChildren.length;
+        drawText();
+
+        speed += slowdown;
+        if (speed > 300) {
+            clearInterval(animationInterval);
+            shownChildren[currentChildIndex].shown = true;
+        } else {
+            clearInterval(animationInterval);
+            animationInterval = setInterval(randomize, speed);
+        }
+    }, speed);
+}
+
+function resetChildren() {
+    const items = JSON.parse(localStorage.getItem("items")) || [];
+    items.forEach(item => {
+        if (item.parentId !== null) {
+            item.shown = false;
+        }
+    });
+    localStorage.setItem("items", JSON.stringify(items));
+    displayItems();
+}
+
+document.getElementById("randomize-button").addEventListener("click", () => {
+    verbs = JSON.parse(localStorage.getItem("items")).filter(item => item.parentId === null);
+    children = JSON.parse(localStorage.getItem("items")).filter(item => item.parentId !== null);
+    currentVerbIndex = 0;
+    currentChildIndex = 0;
+    randomize();
+});
+
+document.getElementById("reset-children").addEventListener("click", resetChildren);
+
+drawBoxes();
