@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reset</title>
+</head>
+<body>
+<button id="reset">Reset</button>
+
+<div id="storage-content"></div>
+<script>
+  window.onload = function() {
+    var storageContent = document.getElementById('storage-content');
+
+    // Get the reset button
+    var resetButton = document.getElementById('reset');
+
+    // Add a click event listener to the reset button
+    resetButton.addEventListener('click', function() {
+      // Clear the local storage
+      localStorage.clear();
+
+      // Insert new hard-coded data
+      var hardCodedData = {
+        "items": JSON.stringify([
+          {
+            "id": 1687135198104.476,
+            "name": "Sing",
+            "parentId": null
+          },
+          {
+            "id": 1687135702650.249,
+            "name": "Dance",
+            "parentId": null
+          },
+          {
+            "id": 1687144550866.2742,
+            "name": "Read Poem",
+            "parentId": null
+          },
+          {
+            "id": 1687145961625.0818,
+            "name": "Like an Egyption",
+            "parentId": "1687135702650.249",
+            "shown": false
+          },
+          {
+            "id": 1687190134116.5474,
+            "name": "Draw",
+            "parentId": null
+          },
+          {
+            "id": 1687190140006.5576,
+            "name": "your choice",
+            "parentId": "1687190134116.5474",
+            "shown": false
+          },
+          {
+            "id": 1687190224539.0012,
+            "name": "Wear",
+            "parentId": null
+          },
+          {
+            "id": 1687195262942.6333,
+            "name": "your choice",
+            "parentId": "1687135198104.476",
+            "shown": false
+          },
+          {
+            "id": 1687195267608.4475,
+            "name": "Ave Maria",
+            "parentId": "1687135198104.476",
+            "shown": false
+          },
+          {
+            "id": 1687195279580.9272,
+            "name": "Sabrina choice",
+            "parentId": "1687135198104.476",
+            "shown": false
+          },
+          {
+            "id": 1687195323815.31,
+            "name": "with book on head",
+            "parentId": "1687135702650.249",
+            "shown": false
+          },
+          {
+            "id": 1687195331409.502,
+            "name": "on one foot",
+            "parentId": "1687135702650.249",
+            "shown": false
+          },
+          {
+            "id": 1687195343165.6555,
+            "name": "of your choice",
+            "parentId": "1687144550866.2742",
+            "shown": false
+          },
+          {
+            "id": 1687195386622.3655,
+            "name": "sabrina choice",
+            "parentId": "1687190134116.5474",
+            "shown": false
+          },
+          {
+            "id": 1687195409707.5288,
+            "name": "best hat",
+            "parentId": "1687190224539.0012",
+            "shown": false
+          },
+          {
+            "id": 1687195417209.7146,
+            "name": "winter coat",
+            "parentId": "1687190224539.0012",
+            "shown": true
+          },
+          {
+            "id": 1687253994688.5125,
+            "name": "in demon voice",
+            "parentId": "1687144550866.2742",
+            "shown": false
+          },
+          {
+            "id": 1687254713138.2659,
+            "name": "18 socks",
+            "parentId": "1687190224539.0012",
+            "shown": true
+          },
+          {
+            "id": 1687356658649.4084,
+            "name": "test",
+            "parentId": "1687190224539.0012"
+          },
+          {
+            "id": 1687358323693.7666,
+            "name": "new",
+            "parentId": null
+          },
+          {
+            "id": 1687358328128.3582,
+            "name": "one",
+            "parentId": "1687358323693.7666"
+          },
+          {
+            "id": 1687358330466.3,
+            "name": "two",
+            "parentId": "1687358323693.7666"
+          },
+          {
+            "id": 1687358478639.6624,
+            "name": "Popular",
+            "parentId": null
+          }
+        ]),
+        "fontSettings": JSON.stringify({
+          "font": "Tahoma",
+          "color": "#69dbf2",
+          "size": "38"
+        })
+      };
+
+      for (var key in hardCodedData) {
+        localStorage.setItem(key, hardCodedData[key]);
+      }
+
+      // Clear the storage content div and re-load data from local storage
+      storageContent.innerHTML = '';
+      loadData();
+    });
+
+    // Function to load data from local storage
+    function loadData() {
+      // Get all keys in the local storage
+      var keys = Object.keys(localStorage);
+
+      // Iterate through all keys
+      for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        var value = JSON.parse(localStorage.getItem(key)); // Parse JSON
+
+        // Create a new paragraph
+        var paragraph = document.createElement('p');
+        paragraph.textContent = `Key: ${key}`;
+
+        // Create a list for the object
+        var list = createListForObject(value);
+
+        // Append the paragraph and list to the storage-content div
+        storageContent.appendChild(paragraph);
+        storageContent.appendChild(list);
+      }
+    }
+
+    // Recursive function to create a list for an object
+    function createListForObject(obj) {
+      var ul = document.createElement('ul');
+
+      for (var property in obj) {
+        var li = document.createElement('li');
+        li.textContent = `${property}: `;
+
+        if (typeof obj[property] === 'object' && obj[property] !== null) {
+          li.appendChild(createListForObject(obj[property]));
+        } else {
+          li.textContent += obj[property];
+        }
+
+        ul.appendChild(li);
+      }
+
+      return ul;
+    }
+
+    // Load data from local storage
+    loadData();
+  };
+</script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+.icon-button img {
+    width: 20px;
+    height: auto;
+}
+
+.container {
+    width: 700px;
+    margin: 0 auto;
+}
+
+body {
+    background-color: #000000;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.element {
+    width: 200px;
+}
+
+.element-wrapper {
+    display: flex;
+}
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(75, 75, 75); /* Fallback color */
+    background-color: rgba(255, 255, 255, 0.1); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #575757;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 700px;
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Add this to the existing styles.css */
+#slots-canvas {
+    background-color: black;
+    display: block;
+    margin: 0 auto;
+}
+
+#randomize-button {
+    display: block;
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    /*margin: 10px auto;*/
+    cursor: pointer;
+}
+
+h1, h2, h3 {
+    font-family: "Arial Black", serif;
+    text-align: center;
+}
+h3 {
+    margin:0;
+}
+
+/*.canvas-wrapper {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    margin-top: 20px;*/
+/*}*/
+
+.neon-box {
+    position: absolute;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.1),
+    0 0 10px rgba(255, 255, 255, 0.1),
+    0 0 20px rgba(255, 255, 255, 0.1),
+    0 0 40px rgba(255, 255, 255, 0.1);
+}
+
+#tabsContainer {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid black;
+}
+
+.tab {
+    margin-right: 5px;
+    padding: 5px 10px;
+    border: 1px solid #ffffff;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+    background: #3a3a3a;
+    cursor: pointer;
+}
+
+.tab.active {
+    background: #000000;
+    margin-bottom: -1px;
+}
+
+#contentContainer {
+    padding: 10px;
+    border: 1px solid white;
+    margin-top: -1px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+#loading-screen {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinner {
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #3498db;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#settingsContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 20px;
+    margin: 20px;
+}
+.font-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #999999;
+    padding: 10px;
+}
+.font-settings label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.preview-canvas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+.canvas-wrapper {
+    width: 400px;
+    height: 200px;
+    border: 1px solid #ddd;
+}
+#example-canvas {
+    width: 100%;
+    height: 100%;
+}
+/* Add a simple transition effect for the settings */
+#settingsContainer {
+    transition: max-height 0.2s ease-out;
+    overflow: hidden;
+}
+/* Initially hide the settings */
+#settingsContainer.collapsed {
+    max-height: 0;
+}
+/* Show the settings when not collapsed */
+#settingsContainer:not(.collapsed) {
+    max-height: 1000px;  /* Approximate max height */
+}
+
+.button-row {
+    display: flex;
+    justify-content: center; /* Centers the button */
+    align-items: center;
+}
+
+#randomize-button {
+    margin-right: 15px; /* Adds space to the right of the button */
+}
+
+#status-message.warn {
+    color: yellow;
+}
+
+#status-message.error {
+    color: red;
+}
