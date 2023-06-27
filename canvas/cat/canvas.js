@@ -41,7 +41,7 @@ function Circle(x, y, radius, type) {
     this.x = typeof x !== 'undefined' ? x : Math.random() * (innerWidth - this.radius * 2);
     this.y = typeof y !== 'undefined' ? y : Math.random() * (innerHeight - this.radius * 2);
     this.direction = Math.random() * 2 * Math.PI;
-    this.speed = this.originalSpeed = (Math.random() * 2) + 1;
+    this.speed = this.originalSpeed = 1;
     this.turnRadius = 0.3;
     this.turnFrequency = 0.3;
     this.r = Math.random() * 255;
