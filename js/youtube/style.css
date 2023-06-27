@@ -1,0 +1,22 @@
+body {
+    font-family: Arial, sans-serif;
+}
+#search-results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+.result {
+    cursor: pointer;
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 4px;
+}
+#queue {
+    margin-top: 16px;
+}
+.queue-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}

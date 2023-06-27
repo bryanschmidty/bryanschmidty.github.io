@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anagramica API Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+<h1>Word Combinations</h1>
+<input type="text" id="inputString" placeholder="Enter a string of letters">
+<button onclick="generateWords()">Generate Words</button>
+<ul id="wordList"></ul>
+
+<script>
+    async function generateWords() {
+        const inputString = document.getElementById('inputString').value;
+        const wordList = document.getElementById('wordList');
+        const words = await getWords(inputString);
+
+        wordList.innerHTML = '';
+
+        words.forEach(word => {
+            const li = document.createElement('li');
+            li.textContent = word;
+            wordList.appendChild(li);
+        });
+    }
+
+    async function getWords(letters) {
+        const response = await fetch(`http://www.anagramica.com/all/:${letters}`, { mode: 'no-cors' });
+        const data = await response.json();
+        const sortedWords = data.all.sort((a, b) => a.length - b.length);
+        return sortedWords;
+    }
+</script>
+</body>
+</html>

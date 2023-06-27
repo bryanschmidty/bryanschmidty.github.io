@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Random Cat GIF</title>
+</head>
+<body>
+<h1>Random Cat GIF</h1>
+<img id="cat-gif" src="https://thecatapi.com/api/images/get?format=gif" alt="A random cat GIF">
+<button onclick="loadNewCatGif()">Load New GIF</button>
+<script>
+  function loadNewCatGif() {
+    // Get a random cat GIF from the Cat API.
+    var url = "https://thecatapi.com/api/images/get?format=gif";
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        // Set the src of the cat GIF image to the response from the Cat API.
+        document.getElementById("cat-gif").src = xhr.responseText;
+      } else {
+        // Handle errors.
+        console.log("Error loading cat GIF: " + xhr.status);
+      }
+    };
+    xhr.send();
+  }
+</script>
+</body>
+</html>

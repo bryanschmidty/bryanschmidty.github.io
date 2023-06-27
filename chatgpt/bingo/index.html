@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .bingo-card {
+      width: 200px;
+      height: 200px;
+      border: 1px solid black;
+      padding: 10px;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+
+    @media print {
+      .form-container {
+        display: none;
+      }
+
+      .bingo-card {
+        page-break-after: always;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="form-container">
+  <label for="wordList">Enter words (one per line):</label><br>
+  <textarea id="wordList" rows="5" cols="30"></textarea><br>
+  <label for="cardCount">Number of Bingo Cards:</label>
+  <input type="number" id="cardCount"><br>
+  <button onclick="createBingoCards()">Create Bingo Cards</button>
+</div>
+
+<div id="bingoCards"></div>
+
+<script>
+  function createBingoCards() {
+    var wordList = document.getElementById("wordList").value;
+    var cardCount = parseInt(document.getElementById("cardCount").value);
+    var words = wordList.split("\n").filter(function(word) {
+      return word.trim() !== "";
+    });
+
+    if (words.length === 0 || isNaN(cardCount)) {
+      alert("Please enter valid inputs.");
+      return;
+    }
+
+    var bingoCardsHTML = "";
+    for (var i = 0; i < cardCount; i++) {
+      bingoCardsHTML += generateBingoCard(words);
+    }
+
+    document.getElementById("bingoCards").innerHTML = bingoCardsHTML;
+  }
+
+  function generateBingoCard(words) {
+    var randomizedWords = shuffleArray(words);
+    var cardHTML = "<div class='bingo-card'>";
+    var fontSize = 24;
+
+    for (var i = 0; i < 25; i++) {
+      var word = randomizedWords[i] || "";
+      cardHTML += "<span style='font-size: " + fontSize + "px;'>" + word + "</span><br>";
+    }
+
+    cardHTML += "</div>";
+    return cardHTML;
+  }
+
+  function shuffleArray(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,429 @@
+
+<p style="background-color: rgb(248, 248, 248); width: 100%; height: 100%; left: 0px; top: 0px; position: fixed; z-index: -100; background-position: center top; background-size: cover; background-image: url(https://camo.mmcdn.com/66b04362d8f220ff8772be37f81bc5ff4b5e3449/68747470733a2f2f692e706f7374696d672e63632f334e6b315a4476772f696d6167652e6a7067);"></p>
+<span style="position: absolute;top: 10px;left: 370px; width: auto; height: 40px; z-index: 1000;"></span>
+<ul style='height: 100%; padding: 30px; box-shadow: rgba(0, 0, 0, 0) 0px 90500px inset; font-size: 19px; font-weight: bold; line-height: 20px; color: rgb(255, 255, 255); font-family: "DFP Sc Sans Heue30_103", Arial, serif; text-shadow: rgba(0, 0, 0, 0.42) 1px 1px 2px; border-radius: 35px; position: relative; margin-left: -152px; background: url(https://camo.mmcdn.com/66b04362d8f220ff8772be37f81bc5ff4b5e3449/68747470733a2f2f692e706f7374696d672e63632f334e6b315a4476772f696d6167652e6a7067) center top / cover no-repeat fixed; margin-top: 40px;'>
+
+
+    <li
+            style="list-style: outside none none; background-color: rgba(198, 93, 184, 0.56); padding: 30px; margin: 5px auto; min-width: 0px; max-width: 900px; border-radius: 35px; border: 1px solid rgba(0, 0, 0, 0.5); background-clip: padding-box; box-shadow: rgba(0, 0, 0, 0.4) 3px 3px 6px; display: block; color: rgb(255, 255, 255);"
+    > <span style="list-style: outside none none; margin: 0;"> <span
+            style="margin: 0 auto; list-style: outside none none; padding: 0; max-width:800px"
+    >
+                <p style="text-align: center;margin: 0; padding: 0;">
+                    <span style="font-size:30px;line-height:35px;"><b>BIO</b></span>
+                </p>
+                <p style="text-align: center;margin: 0; padding: 10px 0 0 0;">Hello everyone, thank you for being here^^<br>
+                    About me, my name is Sabrina, I just recently turned 19. I came to this page for 2 reasons, the first is that I just recently started college, and I'm trying to be independent and pay for all my classes on my own. The second reason is to meet new people who share my interests. In my free time, I like to play computer games, watch anime and movies, and I really love to listen different kinds of music!<br>
+                    My most important hobby is drawing. I create both conventional and electronic artworks. In general, I just try a lot of new things and love to create things with my own hands (from drawing on T-shirts to creating decorative brooches).<br>
+                    I try to make my room a comfortable and cozy place for everyone. I don't care about gender, age, height and weight, if a person is beautiful inside, then he is beautiful outside. This means that I have no prejudices, and every good person can become my friend. ^^<br>
+                    PARAGRAPH DEDICATED TO SEXY STUFF. The only thing I've ever done sexually is kiss another girl. I'm still innocent and can be a little shy. So please be kind to me and gentle.<br>
+                    WARNING: if you treat me like a whore, then we are not on the same path. Rude people have no place in my room!<br>
+                    P.S. I have a big heart and I will listen to your problems and try to give you my best advice. But remember that I am also a person, and my opinion is just something subjective. As you can see I'm still learning about life, but I'm doing my best. I am from a very small town and I am learning English, so please be patient with me. I hope you will become my friend and share your life experience with me.<br>
+                    So if you are here, this means that you have finished reading all this long text. Thank you.<br>
+                    With love, your Sabrina^^
+                </p>
+            </span>
+        </span>
+    </li>
+
+
+    <li style="list-style: outside none none; background-color: rgba(198, 93, 184, 0.56); padding: 30px; margin: 5px auto; min-width: 0px; max-width: 900px; border-radius: 35px; border: 1px solid rgba(0, 0, 0, 0.5); background-clip: padding-box; box-shadow: rgba(0, 0, 0, 0.4) 3px 3px 6px; color: rgb(255, 255, 255);">
+        <span style="list-style: outside none none; margin: 0; padding: 20px 10px;">
+            <p style="text-align: center;margin: 0; padding: 0; font-size: 30px;"><b>My Schedule</b>
+            </p>
+
+
+            <p style="text-align: center;margin: 0; padding: 0;">Study my schedule and come be enchanted by the Tender Devil (Changes and sudden interesting events are possible, so don't forget to check it from time to time^^)
+            </p>
+
+            <ul style="list-style-type: none; display: flex; flex-wrap: wrap; padding: 0;">
+                <li style="width: 100%; border-top: 1px solid white; border-left: 1px solid white; border-right: 1px solid white; box-sizing: border-box; font-weight: bold; display: flex; align-items: center; justify-content: center; background-color: rgba(149, 70, 138, 0.56); font-size: 75%;">
+                    <span style="font-size:1.7em;line-height:1.8em;"><b><img src="https://d37yfk8g50p3by.cloudfront.net/1f344.png" alt="mushroom" style="width: 30px" /> May 2023 <img src="https://d37yfk8g50p3by.cloudfront.net/1f344.png" alt="mushroom" style="width: 30px" /></b></span>
+                </li>
+
+                <li style="width: 100%; border-left: 1px solid white; border-right: 1px solid white; box-sizing: border-box; font-weight: bold; display: flex; align-items: center; justify-content: flex-start; background-color: rgba(149, 70, 138, 0.56); font-size: 75%;">
+
+                    <span style="display: grid; grid-template-columns: repeat(auto-fill, minmax(33%, 1fr)); width: 100%; margin: 0 auto;">
+                        <span>
+                            <img src="https://d37yfk8g50p3by.cloudfront.net/1f344.png" alt="mushroom" style="width: 30px" /> ~ 7:00PM - 1:00AM EST
+                        </span>
+                        <span>
+                            <img src="https://d37yfk8g50p3by.cloudfront.net/1f438.png" alt="frog" style="width: 30px" /> ~ No broadcast
+                        </span>
+                        <span>
+                            <img src="https://d37yfk8g50p3by.cloudfront.net/1f389.png" alt="party popper" style="width: 30px" /> ~ See event list below
+                        </span>
+                    </span>
+                </li>
+
+
+                <li style="width: 14.28%; border: 1px solid white; box-sizing: border-box; font-weight: bold; display: flex; align-items: center; justify-content: center; background-color: rgba(149, 70, 138, 0.56); font-size: 75%;">S</li>
+                <li style="width: 14.28%; border: 1px solid white; box-sizing: border-box; font-weight: bold; display: flex; align-items: center; justify-content: center; background-color: rgba(149, 70, 138, 0.56); font-size: 75%;">M</li>
+                <li style="width: 14.28%; border: 1px solid white; box-sizing: border-box; font-weight: bold; display: flex; align-items: center; justify-content: center; background-color: rgba(149, 70, 138, 0.56); font-size: 75%;">T</li>
+                <li style="width: 14.28%; border: 1px solid white; box-sizing: border-box; font-weight: bold; display: flex; align-items: center; justify-content: center; background-color: rgba(149, 70, 138, 0.56); font-size: 75%;">W</li>
+                <li style="width: 14.28%; border: 1px solid white; box-sizing: border-box; font-weight: bold; display: flex; align-items: center; justify-content: center; background-color: rgba(149, 70, 138, 0.56); font-size: 75%;">T</li>
+                <li style="width: 14.28%; border: 1px solid white; box-sizing: border-box; font-weight: bold; display: flex; align-items: center; justify-content: center; background-color: rgba(149, 70, 138, 0.56); font-size: 75%;">F</li>
+                <li style="width: 14.28%; border: 1px solid white; box-sizing: border-box; font-weight: bold; display: flex; align-items: center; justify-content: center; background-color: rgba(149, 70, 138, 0.56); font-size: 75%;">S</li>
+
+
+
+
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">30</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">1</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">2</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f389.png" alt="party popper" style="width: 30px" /></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">3</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">4</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">5</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">6</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"></span>
+                </li>
+
+
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">7</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">8</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f389.png" alt="party popper" style="width: 30px" /></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">9</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">10</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">11</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">12</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">13</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"></span>
+                </li>
+
+
+
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">14</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">15</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f344.png" alt="mushroom" style="width: 30px" /></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">16</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f344.png" alt="mushroom" style="width: 30px" /></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">17</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f438.png" alt="frog" style="width: 30px" /></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">18</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f438.png" alt="frog" style="width: 30px" /></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">19</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f344.png" alt="mushroom" style="width: 30px" /></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">20</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f344.png" alt="mushroom" style="width: 30px" /></span>
+                </li>
+
+
+
+
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">21</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f438.png" alt="frog" style="width: 30px" /></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">22</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f438.png" alt="frog" style="width: 30px" /></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">23</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f344.png" alt="mushroom" style="width: 30px" /></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">24</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f344.png" alt="mushroom" style="width: 30px" /></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">25</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f438.png" alt="frog" style="width: 30px" /></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">26</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f344.png" alt="mushroom" style="width: 30px" /></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">27</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f389.png" alt="party popper" style="width: 30px" /></span>
+                </li>
+
+
+
+
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">28</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f344.png" alt="mushroom" style="width: 30px" /></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">29</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f438.png" alt="frog" style="width: 30px" /></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">30</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f438.png" alt="frog" style="width: 30px" /></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">31</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f344.png" alt="mushroom" style="width: 30px" /></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">1</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f344.png" alt="mushroom" style="width: 30px" /></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">2</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f438.png" alt="frog" style="width: 30px" /></span>
+                </li>
+                <li style="width: 14.28%; height: 9vh; border: 1px solid white; box-sizing: border-box; position: relative; display: flex; align-items: center; padding-left: 2%;">
+                    <span style="position: absolute; top: 0; left: 0; background-color: rgba(149, 70, 138, 0.56); width: 20px; height: 20px; display: inline-block; text-align: center; line-height: 20px; border: 1px solid white; margin: -1px; font-size: .6em;">3</span>
+                    <span style="text-align: center; vertical-align: middle; font-size: 1.25em;"><img src="https://d37yfk8g50p3by.cloudfront.net/1f438.png" alt="frog" style="width: 30px" /></span>
+                </li>
+            </ul>
+
+
+
+            <ul style="margin: 0 auto; list-style: outside none none; text-shadow:1px 1px 2px rgba(0, 0, 0, 0.42); padding: 0;">
+                <li style="margin-bottom: 5px; text-align: center; padding: 6px 0;">
+                    <span style="font-size:1.2em;">
+                        <img src="https://d37yfk8g50p3by.cloudfront.net/1f389.png" alt="party popper" style="width: 30px" /> Special Events <img src="https://d37yfk8g50p3by.cloudfront.net/1f389.png" alt="party popper" style="width: 30px" />
+                    </span>
+                </li>
+
+                <li style="margin-bottom: 5px; text-align: left;border-bottom: 1px solid;">
+                    <span style="font-size: .75em;">
+                        <img src="https://d37yfk8g50p3by.cloudfront.net/1f389.png" alt="party popper" style="width: 30px" /> Bean Show<span style="float:right;">May 2</span>
+                    </span>
+                    <span style="font-size: .55em;">I eat Bamboozled jelly beans. Will they be tasty or disgusting?</span>
+                </li>
+
+                <li style="margin-bottom: 5px; text-align: left;border-bottom: 1px solid;">
+                    <span style="font-size: .75em;">
+                        <img src="https://d37yfk8g50p3by.cloudfront.net/1f389.png" alt="party popper" style="width: 30px" /> Mochi Show<span style="float:right;">May 8</span>
+                    </span>
+                    <span style="font-size: .55em;">I try Japanese Mochi for the first time.</span>
+                </li>
+
+                <li style="margin-bottom: 5px; text-align: left;border-bottom: 1px solid;">
+                    <span style="font-size: .75em;">
+                        <img src="https://d37yfk8g50p3by.cloudfront.net/1f389.png" alt="party popper" style="width: 30px" /> Pop a balloon and get a prize<span style="float:right;">May 27</span>
+                    </span>
+                    <span style="font-size: .55em;">Choose a balloon, inside each balloon is a special action for me<img src="https://d37yfk8g50p3by.cloudfront.net/1f438.png" alt="frog" style="width: 30px" /></span>
+                </li>
+            </ul>
+
+        </span>
+    </li>
+    <li
+            style="list-style: outside none none; background-color: rgba(198, 93, 184, 0.56); padding: 30px; margin: 5px auto; min-width: 0px; max-width: 900px; border-radius: 35px; border: 1px solid rgba(0, 0, 0, 0.5); background-clip: padding-box; box-shadow: rgba(0, 0, 0, 0.4) 3px 3px 6px; color: rgb(255, 255, 255);"
+    > <span style="list-style: outside none none; margin: 0; padding: 20px 10px;"
+    >
+            <ul
+                    style="margin: 0 auto; list-style: outside none none; text-shadow:1px 1px 2px rgba(0, 0, 0, 0.42); padding: 0;"
+            >
+                <li style="margin-bottom: 5px; text-align: center; padding: 6px 0;">
+                    <span style="font-size:32px;line-height:35px;"> <b
+                    >TIP MENU</b> </span>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >1. Say hello<font style="float:right;">3 tokens
+                    </font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >2. PM<font style="float:right;">5 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >3. Blow you a kiss<font style="float:right;">7 tokens
+                    </font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >4. Applause!!!<font style="float:right;">10 tokens
+                    </font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >5. Song request<font style="float:right;">11 tokens
+                    </font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >6. Buy me some flowers<font style="float:right;">15 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >7. Buy me some chocolate<font style="float:right;">19 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >8. Dirty talk in PM<font style="float:right;">20 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >9. Please don’t stop<font style="float:right;">22 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >10. Confess to the Devil<font style="float:right;">25 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >11. Wear stockings (white or black)<font style="float:right;">30 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >12. Stand and show body<font style="float:right;">40 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >13. Wear the best hat<font style="float:right;">45 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >14. You love me ♡<font style="float:right;">50 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >15. Dance, dance!<font style="float:right;">55 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >16. Pizza fund<font style="float:right;">60 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >17. Change normal talk to whisper<font style="float:right;">65 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >18. Show a piece of my art<font style="float:right;">75 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >19. Reading a poem<font style="float:right;">80 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >20. Change outfit <font style="float:right;">85 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >21. Flash breast<font style="float:right;">90 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >22. Hair bra<font style="float:right;">95 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >23. I'm addicted to Sabrina!<font style="float:right;">100 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >24. Oil breast (only in private)<font style="float:right;">110 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >25. Tea time (only in private)<font style="float:right;">111 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >26. No comments, you're amazing!<font style="float:right;">115 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >27. Draw you something<font style="float:right;">175 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >28. Full Naked (only in private)<font style="float:right;">200 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >29. Control lovense lush (only in private)<font style="float:right;">800 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >30. Real orgasm (only in private)<font style="float:right;">444 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >31. Be my hero<font style="float:right;">500 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >32. Be My Favorite number<font style="float:right;">666 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >33. Marry me<font style="float:right;">1500 tokens</font>
+                </li>
+                <li
+                        style="font-size: .75em; padding-left: 20px; margin-bottom: 5px; padding-right: 20px; text-align: left;border-bottom: 1px solid;padding: 6px 0;"
+                >34. My dream tip<font style="float:right;">5000 tokens</font>
+                </li>
+            </ul>
+        </span></li>
+    <br/>
+    <li style="list-style: outside none none; background-color: rgba(198, 93, 184, 0.56); padding: 30px; margin: 5px auto; min-width: 0px; max-width: 900px; border-radius: 35px; border: 1px solid rgba(0, 0, 0, 0.5); background-clip: padding-box; box-shadow: rgba(0, 0, 0, 0.4) 3px 3px 6px; display: block; color: rgb(255, 255, 255);">
+        <span style="list-style: outside none none; margin: 0; padding: 20px 10px 20px 10px;">
+            <span style="margin: 0 auto; list-style: outside none none; padding: 0; max-width:800px">
+                <p style="text-align: center;margin: 0; padding: 0;text-indent: 0;">
+                    <span style="font-size:30px;line-height:35px;"><b>RULES</b></span><br/>
+                </p>
+                <p style="text-align: center;margin: 0; padding: 10px 0 0 0;text-indent: 0;">1. No demands
+                    2. No advertising
+                    3. No directing
+                    4. Keep it classy and be respectful
+                    5. No porn gifs, other classy or funny gifs are allowed
+                    6. All requests go in tip notes
+                </p>
+            </span>
+        </span>
+    </li>
+</ul>
