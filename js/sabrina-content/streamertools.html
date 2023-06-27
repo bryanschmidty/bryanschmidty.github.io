@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Randomizer</title>
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.814.0.min.js"></script>
+  <script src="db.js"></script>
+  <script src="draw.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <div id="loading-screen">
+    <div class="spinner"></div>
+  </div>
+
+  <h1>MultiLottery</h1>
+
+  <div id="tabsContainer"></div>
+  <div id="contentContainer">
+    <div class="button-row">
+      <button id="randomize-button">Randomize</button>
+      <button id="clear-message">clear</button>
+      <span id="status-message"></span>
+    </div>
+
+    <button id="toggle-settings">Expand display settings</button>
+    <div id="settingsContainer" class="collapsed">
+      <div class="display-settings">
+        <div id="settings" class="font-settings-wrapper">
+          <div class="font-settings">
+            <h3>Font</h3>
+            <label>Font: <select id="font-dropdown"></select></label>
+            <label>Color: <input type="color" id="color-selector"></label>
+            <label>Size: <select id="size-dropdown"></select></label>
+          </div>
+          <div class="font-settings">
+            <h3>Border</h3>
+            <label>Width: <input type="text" id="border-width" size="3"></label>
+            <label>Corner Radius: <input type="text" id="corner-radius" size="3"></label>
+            <label><input type="checkbox" id="border-color-override"> Border Color: <input type="color" id="border-color"></label>
+            <label>Glow <input type="checkbox" id="glow-checkbox"></label>
+            <label>Fill <input type="checkbox" id="fill-rectangle"></label>
+          </div>
+        </div>
+      </div>
+      <div class="preview-canvas">
+        <div class="canvas-wrapper">
+          <canvas id="example-canvas"></canvas>
+        </div>
+        <label>
+          <input type="text" id="preview-text">
+          <button id="preview-button">Preview</button>
+        </label>
+
+      </div>
+    </div>
+
+    <table id="items-table">
+      <thead>
+      <tr>
+        <th>Item</th>
+        <th>Sub-Item</th>
+      </tr>
+      </thead>
+      <tbody id="items-list"></tbody>
+    </table>
+    <button id="add-verb">Add Item</button>
+    <button id="reset-children">Reset All</button>
+  </div>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>
