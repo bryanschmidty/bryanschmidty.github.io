@@ -363,8 +363,23 @@ document.addEventListener("DOMContentLoaded", function() {
         canvas.width = parseInt(style.width, 10);
         canvas.height = parseInt(style.height, 10);
 
+        // Set canvas background based on brightness
+        const color = settings.border.color;
+        const brightness = getBrightness(color);
+        canvas.style.backgroundColor = brightness < 128 ? '#ffffff' : '#000000';
+
         const text = document.getElementById("preview-text").value;
         drawText(canvas, settings, text);
+    }
+
+    function getBrightness(color) {
+        color = color.replace('#', '');
+
+        const r = parseInt(color.substr(0, 2), 16);
+        const g = parseInt(color.substr(2, 2), 16);
+        const b = parseInt(color.substr(4, 2), 16);
+
+        return (299*r + 587*g + 114*b) / 1000;
     }
 
     function updateLotterySettings() {
