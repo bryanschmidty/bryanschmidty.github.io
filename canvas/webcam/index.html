@@ -3,36 +3,64 @@
 <head>
   <title>Camera to Canvas</title>
   <style>
-    body {
-      margin: 0;
-      display: flex;
-    }
-    #controls {
+    #controlsPanel {
       width: 200px;
-      padding: 10px;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background-color: #f0f0f0;
+      overflow: auto;
+      /*transition: all 0.5s ease;*/
+      z-index: 1;
     }
-    #canvas {
-      flex-grow: 1;
+    #collapseButton {
+      position: absolute;
+      left: 200px;
+      top: 0;
+      z-index: 1;
+    }
+    .collapsed {
+      width: 0;
+      visibility: hidden;
+    }
+    canvas {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .collapsed + #collapseButton {
+      left: 0;
     }
   </style>
 </head>
 <body>
-<div id="controls">
+<div id="controlsPanel" class="collapsed">
   <label for="pixelChange">Pixel Change:</label>
   <input type="range" id="pixelChange" name="pixelChange" min="1" max="255">
+  <span id="pixelChangeValue"></span>
   <br>
   <label for="colorPicker">Color:</label>
   <input type="color" id="colorPicker" name="colorPicker">
+  <span id="colorPickerValue"></span>
   <br>
   <label for="unchangedThreshold">Unchanged Threshold:</label>
   <input type="range" id="unchangedThreshold" name="unchangedThreshold" min="1" max="100">
+  <span id="unchangedThresholdValue"></span>
   <br>
   <label for="videoOpacity">Video Opacity:</label>
   <input type="range" id="videoOpacity" name="videoOpacity" min="0" max="100" value="100">
+  <span id="videoOpacityValue"></span>
   <br>
   <label for="overlayOpacity">Overlay Opacity:</label>
   <input type="range" id="overlayOpacity" name="overlayOpacity" min="0" max="100" value="100">
+  <span id="overlayOpacityValue"></span>
 </div>
+
+<button id="collapseButton" onclick="togglePanel()">x</button>
+
 <canvas id="canvas"></canvas>
 
 <script>
@@ -76,6 +104,34 @@
   videoOpacityInput.addEventListener('input', () => setCookie('videoOpacity', videoOpacityInput.value, 30));
   overlayOpacityInput.addEventListener('input', () => setCookie('overlayOpacity', overlayOpacityInput.value, 30));
 
+  document.querySelector('#pixelChange').addEventListener('input', function() {
+    document.querySelector('#pixelChangeValue').textContent = this.value;
+  });
+
+  document.querySelector('#colorPicker').addEventListener('input', function() {
+    document.querySelector('#colorPickerValue').textContent = this.value;
+  });
+
+  document.querySelector('#unchangedThreshold').addEventListener('input', function() {
+    document.querySelector('#unchangedThresholdValue').textContent = this.value;
+  });
+
+  document.querySelector('#videoOpacity').addEventListener('input', function() {
+    document.querySelector('#videoOpacityValue').textContent = this.value;
+  });
+
+  document.querySelector('#overlayOpacity').addEventListener('input', function() {
+    document.querySelector('#overlayOpacityValue').textContent = this.value;
+  });
+
+  window.addEventListener('load', function() {
+    document.querySelector('#pixelChange').dispatchEvent(new Event('input'));
+    document.querySelector('#colorPicker').dispatchEvent(new Event('input'));
+    document.querySelector('#unchangedThreshold').dispatchEvent(new Event('input'));
+    document.querySelector('#videoOpacity').dispatchEvent(new Event('input'));
+    document.querySelector('#overlayOpacity').dispatchEvent(new Event('input'));
+  });
+
   const video = document.createElement('video');
   let oldFrameData = null;
   const canvas = document.querySelector('#canvas');
@@ -83,7 +139,7 @@
   const changeCounters = new Uint8Array(window.innerWidth * window.innerHeight);
 
   function resize() {
-    canvas.width = window.innerWidth - 200; // 200px for the controls
+    canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     oldFrameData = new ImageData(canvas.width, canvas.height);
     changeCounters.length = canvas.width * canvas.height;
@@ -119,7 +175,6 @@
     const frameData = tempContext.getImageData(0, 0, canvas.width, canvas.height);
 
     const displayData = context.createImageData(canvas.width, canvas.height);
-    const overlayData = context.createImageData(canvas.width, canvas.height);
 
     const videoOpacity = parseInt(videoOpacityInput.value) / 100;
     const overlayOpacity = parseInt(overlayOpacityInput.value) / 100;
@@ -135,30 +190,24 @@
 
       const pixelIndex = i / 4;
 
-      // Copy the original video frame data to displayData and apply video opacity
-      displayData.data.set(frameData.data.subarray(i, i + 4), i);
-      displayData.data[i + 3] *= videoOpacity;
-
-      if (pixelChange > pixelChangeThreshold) {
+      if (pixelChange > pixelChangeThreshold && changeCounters[pixelIndex] < unchangedThreshold) {
         changeCounters[pixelIndex]++;
-        if (changeCounters[pixelIndex] < unchangedThreshold) {
-          // Set the overlay color and apply overlay opacity
-          overlayData.data[i] = color.r;
-          overlayData.data[i + 1] = color.g;
-          overlayData.data[i + 2] = color.b;
-          overlayData.data[i + 3] = 255 * overlayOpacity;
-        }
+
+        // Blend the overlay color with the original video
+        displayData.data[i] = (color.r * overlayOpacity) + (frameData.data[i] * videoOpacity * (1 - overlayOpacity));
+        displayData.data[i + 1] = (color.g * overlayOpacity) + (frameData.data[i + 1] * videoOpacity * (1 - overlayOpacity));
+        displayData.data[i + 2] = (color.b * overlayOpacity) + (frameData.data[i + 2] * videoOpacity * (1 - overlayOpacity));
+        displayData.data[i + 3] = 255;
       } else {
         changeCounters[pixelIndex] = 0;
+
+        // Use the original video data with video opacity
+        displayData.data.set(frameData.data.subarray(i, i + 4), i);
+        displayData.data[i + 3] *= videoOpacity;
       }
     }
 
-    // Draw the original video frame with video opacity
     context.putImageData(displayData, 0, 0);
-
-    // Draw the overlay with overlay opacity
-    context.putImageData(overlayData, 0, 0, 0, 0, canvas.width, canvas.height);
-
     oldFrameData.data.set(frameData.data);
 
     setTimeout(updateCanvas, 50);
@@ -171,6 +220,11 @@
       g: parseInt(result[2], 16),
       b: parseInt(result[3], 16)
     } : null;
+  }
+
+  function togglePanel() {
+    const panel = document.getElementById('controlsPanel');
+    panel.classList.toggle('collapsed');
   }
 </script>
 </body>
