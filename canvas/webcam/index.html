@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Camera to Canvas</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+    }
+    #controls {
+      width: 200px;
+      padding: 10px;
+    }
+    #canvas {
+      flex-grow: 1;
+    }
+  </style>
+</head>
+<body>
+<div id="controls">
+  <label for="pixelChange">Pixel Change:</label>
+  <input type="range" id="pixelChange" name="pixelChange" min="1" max="255">
+  <br>
+  <label for="colorPicker">Color:</label>
+  <input type="color" id="colorPicker" name="colorPicker">
+  <br>
+  <label for="unchangedThreshold">Unchanged Threshold:</label>
+  <input type="range" id="unchangedThreshold" name="unchangedThreshold" min="1" max="100">
+  <br>
+  <label for="videoOpacity">Video Opacity:</label>
+  <input type="range" id="videoOpacity" name="videoOpacity" min="0" max="100" value="100">
+  <br>
+  <label for="overlayOpacity">Overlay Opacity:</label>
+  <input type="range" id="overlayOpacity" name="overlayOpacity" min="0" max="100" value="100">
+</div>
+<canvas id="canvas"></canvas>
+
+<script>
+  // Function to set a cookie
+  function setCookie(name, value, days) {
+    const d = new Date();
+    d.setTime(d.getTime() + (days*24*60*60*1000));
+    const expires = "expires="+d.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/";
+  }
+
+  // Function to get a cookie
+  function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
+
+  const pixelChangeInput = document.getElementById('pixelChange');
+  const colorPicker = document.getElementById('colorPicker');
+  const unchangedThresholdInput = document.getElementById('unchangedThreshold');
+  const videoOpacityInput = document.getElementById('videoOpacity');
+  const overlayOpacityInput = document.getElementById('overlayOpacity');
+
+  // Restoring values from cookies
+  pixelChangeInput.value = getCookie('pixelChange') || '30';
+  colorPicker.value = getCookie('color') || '#ff0000';
+  unchangedThresholdInput.value = getCookie('unchangedThreshold') || '5';
+  videoOpacityInput.value = getCookie('videoOpacity') || '100';
+  overlayOpacityInput.value = getCookie('overlayOpacity') || '100';
+
+  // Listeners to save values to cookies
+  pixelChangeInput.addEventListener('input', () => setCookie('pixelChange', pixelChangeInput.value, 30));
+  colorPicker.addEventListener('input', () => setCookie('color', colorPicker.value, 30));
+  unchangedThresholdInput.addEventListener('input', () => setCookie('unchangedThreshold', unchangedThresholdInput.value, 30));
+  videoOpacityInput.addEventListener('input', () => setCookie('videoOpacity', videoOpacityInput.value, 30));
+  overlayOpacityInput.addEventListener('input', () => setCookie('overlayOpacity', overlayOpacityInput.value, 30));
+
+  const video = document.createElement('video');
+  let oldFrameData = null;
+  const canvas = document.querySelector('#canvas');
+  const context = canvas.getContext('2d');
+  const changeCounters = new Uint8Array(window.innerWidth * window.innerHeight);
+
+  function resize() {
+    canvas.width = window.innerWidth - 200; // 200px for the controls
+    canvas.height = window.innerHeight;
+    oldFrameData = new ImageData(canvas.width, canvas.height);
+    changeCounters.length = canvas.width * canvas.height;
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+
+  navigator.mediaDevices.getUserMedia({ video: { width: canvas.width, height: canvas.height } })
+          .then(function(stream) {
+            if ("srcObject" in video) {
+              video.srcObject = stream;
+            } else {
+              video.src = window.URL.createObjectURL(stream);
+            }
+
+            video.onloadedmetadata = function(e) {
+              video.play();
+              updateCanvas();
+            };
+          })
+          .catch(function(err) {
+            console.log("An error occurred: " + err);
+          });
+
+  function updateCanvas() {
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = canvas.width;
+    tempCanvas.height = canvas.height;
+    const tempContext = tempCanvas.getContext('2d');
+    tempContext.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    const frameData = tempContext.getImageData(0, 0, canvas.width, canvas.height);
+
+    const displayData = context.createImageData(canvas.width, canvas.height);
+    const overlayData = context.createImageData(canvas.width, canvas.height);
+
+    const videoOpacity = parseInt(videoOpacityInput.value) / 100;
+    const overlayOpacity = parseInt(overlayOpacityInput.value) / 100;
+    const pixelChangeThreshold = parseInt(pixelChangeInput.value);
+    const unchangedThreshold = parseInt(unchangedThresholdInput.value);
+    const color = hexToRgb(colorPicker.value);
+
+    for (let i = 0; i < frameData.data.length; i += 4) {
+      const pixelChange =
+              Math.abs(frameData.data[i] - oldFrameData.data[i]) +
+              Math.abs(frameData.data[i + 1] - oldFrameData.data[i + 1]) +
+              Math.abs(frameData.data[i + 2] - oldFrameData.data[i + 2]);
+
+      const pixelIndex = i / 4;
+
+      // Copy the original video frame data to displayData and apply video opacity
+      displayData.data.set(frameData.data.subarray(i, i + 4), i);
+      displayData.data[i + 3] *= videoOpacity;
+
+      if (pixelChange > pixelChangeThreshold) {
+        changeCounters[pixelIndex]++;
+        if (changeCounters[pixelIndex] < unchangedThreshold) {
+          // Set the overlay color and apply overlay opacity
+          overlayData.data[i] = color.r;
+          overlayData.data[i + 1] = color.g;
+          overlayData.data[i + 2] = color.b;
+          overlayData.data[i + 3] = 255 * overlayOpacity;
+        }
+      } else {
+        changeCounters[pixelIndex] = 0;
+      }
+    }
+
+    // Draw the original video frame with video opacity
+    context.putImageData(displayData, 0, 0);
+
+    // Draw the overlay with overlay opacity
+    context.putImageData(overlayData, 0, 0, 0, 0, canvas.width, canvas.height);
+
+    oldFrameData.data.set(frameData.data);
+
+    setTimeout(updateCanvas, 50);
+  }
+
+  function hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  }
+</script>
+</body>
+</html>

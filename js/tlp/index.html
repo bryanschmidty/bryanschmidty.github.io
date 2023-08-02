@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transposed Letter Priming</title>
+</head>
+<body>
+
+    <textarea id="inputText" rows="4" cols="50"></textarea>
+
+    <button onclick="convertText()">Convert Text</button>
+
+    <div id="outputText"></div>
+
+    <script>
+        function convertText() {
+            const input = document.getElementById("inputText").value;
+            const words = input.split(" ");
+
+            const convertedWords = words.map(word => {
+
+                let newWord = word[0];
+
+                for (let i = 1; i < word.length - 1; i++) {
+                    newWord += word[i+1];
+                    newWord += word[i];
+                    i++;
+                }
+
+                newWord += word[word.length-1];
+
+                return newWord;
+            });
+
+            document.getElementById("outputText").textContent = convertedWords.join(" ");
+        }
+    </script>
+
+</body>
+</html>

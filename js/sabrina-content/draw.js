@@ -52,15 +52,27 @@ function drawText(canvas, settings, text) {
     const color = settings.font.color;
     const size = settings.font.size;
 
+    text = wrapText(ctx, text, 500);
+    const lines = text.split('\n');
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.font = `${size}px ${font}`;
     ctx.fillStyle = color;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
+
     const textWidth = ctx.measureText(text).width;
+
+    let maxLineWidth = 0;
+    for (let i = 0; i < lines.length; i++) {
+        let lineWidth = ctx.measureText(lines[i]).width;
+        maxLineWidth = Math.max(maxLineWidth, lineWidth);
+    }
+
     const padding = 10;
-    const boxWidth = textWidth + padding * 2;
-    const boxHeight = parseInt(size, 10) + padding * 2;
+    const boxWidth = maxLineWidth + padding * 2;
+    const boxHeight = padding * 2 + size * lines.length;
+
     let x = (canvas.width - boxWidth) / 2;
     let y = (canvas.height - boxHeight) / 2;
 
@@ -68,10 +80,32 @@ function drawText(canvas, settings, text) {
 
     ctx.fillStyle = settings.font.color;
     ctx.shadowColor = settings.font.color;
-    ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+    for (let i = 1; i <= lines.length; i++) {
+        ctx.fillText(lines[i - 1], canvas.width / 2, (canvas.height - boxHeight - padding) / 2 + i * size);
+    }
 }
 
 function clearCanvas(canvas) {
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function wrapText(context, text, maxWidth) {
+    let words = text.split(' ');
+    let lines = [];
+    let currentLine = words[0];
+
+    for(let i = 1; i < words.length; i++) {
+        let word = words[i];
+        let width = context.measureText(currentLine + ' ' + word).width;
+        console.log(width)
+        if(width < maxWidth) {
+            currentLine += ' ' + word;
+        } else {
+            lines.push(currentLine);
+            currentLine = word;
+        }
+    }
+    lines.push(currentLine);
+    return lines.join('\n');
 }

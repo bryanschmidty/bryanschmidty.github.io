@@ -551,7 +551,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function readLocal(key) {
         return new Promise(resolve => {
             setTimeout(() => {
-                resolve(JSON.parse(localStorage.getItem(key)));
+                resolve(readDB(key));
             }, TIMEOUT);
         })
     }
