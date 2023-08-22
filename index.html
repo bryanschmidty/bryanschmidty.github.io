@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Portfolio</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,700&display=swap">
+
+  <style>
+    body {
+      background-color: #222;
+      color: #f0f0f0;
+      font-family: 'Raleway', sans-serif; /* Updated font family */
+      margin: 0;
+      padding: 0;
+    }
+
+    #triangles-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      z-index: -1;
+    }
+
+    .header {
+      text-align: center;
+      padding: 40px;
+      background-color: rgba(55, 55, 255, 0.8);
+    }
+
+    .header h1 {
+      font-size: 2.5em;
+      font-weight: 700; /* Make the header a bit bolder */
+      transition: transform 0.3s ease;
+    }
+
+    .header h1:hover {
+      transform: scale(1.05);
+    }
+
+    .description {
+      padding: 20px 40px;
+      max-width: 800px;
+      margin: auto;
+      border-radius: 10px;
+      line-height: 1.5;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    #projects {
+      display: flex; /* or 'grid' */
+      flex-wrap: wrap; /* if using flexbox */
+      /* grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); */ /* if using grid */
+      gap: 20px;
+      justify-content: center;
+    }
+    a.project-block-link {
+      text-decoration: none;
+      color: inherit;
+    }
+    .project-block {
+      position: relative;
+      width: 300px;
+      height: 400px;
+      border-radius: 10px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: box-shadow 0.1s;
+      cursor: pointer;
+    }
+    .project-block:hover {
+      box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+    }
+
+    .project-block .screenshot {
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 50%;
+      width: 100%;
+    }
+
+    .project-block .info {
+      position: relative;
+      padding: 10px;
+      height: 50%;
+    }
+
+    .project-block .tags {
+       position: absolute;
+       bottom: 30px;
+       left: 10px;
+       color: #000;
+     }
+
+    .project-block .tag {
+      font-size: 10px;
+      padding: 5px;
+      border-radius: 5px;
+    }
+
+    .project-title {
+      font-weight: bold;
+    }
+    .tags {
+      display: flex;
+      gap: 5px;
+    }
+    .tag {
+      background: #555;
+      padding: 5px;
+      border-radius: 3px;
+    }
+    .filter-and-sort {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background: rgba(133, 133, 133, 0.5);
+      border-radius: 5px;
+      max-width: 800px;
+      margin: auto;
+      margin-bottom: 20px;
+      backdrop-filter: blur(4px);
+    }
+
+    #filter-tags .tag {
+      cursor: pointer;
+      margin-right: 5px;
+      transition: background-color 0.3s;
+    }
+
+    #filter-tags .tag:hover {
+      background-color: #777;
+    }
+
+    .sort-options {
+      display: flex;
+      align-items: center;
+    }
+
+    .sort-options select {
+      padding: 5px;
+      background: #444;
+      color: #f0f0f0;
+      border: none;
+      border-radius: 3px;
+    }
+    .ai-button {
+      position: absolute;
+      bottom: 30px;
+      right: 10px;
+      padding: 10px;
+      background-color: #4caf50; /* You can choose any color you like */
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 12px;
+      transition: background-color 0.3s;
+    }
+
+    .ai-button:hover {
+      background-color: #45a049; /* Darker green on hover */
+    }
+
+  </style>
+</head>
+<body>
+<div id="triangles-bg">
+
+  <canvas id="canvas"></canvas>
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    function Triangle(x, y, base, height, direction, opacity, targetOpacity, deadline, i, j) {
+      this.x = x;
+      this.y = y;
+      this.base = base;
+      this.height = height;
+      this.direction = direction;
+      this.opacity = opacity;
+      this.targetOpacity = targetOpacity;
+      this.deadline = deadline;
+      this.i = i;
+      this.j = j;
+    }
+
+    Triangle.prototype.draw = function() {
+      ctx.beginPath();
+      ctx.moveTo(this.x, this.y);
+
+      if(this.direction === "up") {
+        ctx.lineTo(this.x - this.base / 2, this.y + this.height);
+        ctx.lineTo(this.x + this.base / 2, this.y + this.height);
+      } else {
+        ctx.lineTo(this.x - this.base / 2, this.y - this.height);
+        ctx.lineTo(this.x + this.base / 2, this.y - this.height);
+      }
+
+      ctx.closePath();
+
+      ctx.fillStyle = `rgba(20, 50, 175, ${this.opacity})`;
+      ctx.fill();
+
+      // this.drawDot();
+    }
+
+    // Method to draw red dot at the center of each triangle
+    Triangle.prototype.drawDot = function() {
+      const dotY = this.direction === "up" ? this.y + this.base / 2 : this.y - this.base / 2;
+
+      // ctx.beginPath();
+      // ctx.arc(this.x, dotY, 5, 0, Math.PI * 2, false); // 5 is the radius of the dot
+      // ctx.fillStyle = 'red';
+      // ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, 5, 0, Math.PI * 2, false); // 5 is the radius of the dot
+      ctx.fillStyle = 'blue';
+      ctx.fill();
+
+      ctx.fillStyle = 'black';
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(this.i + "," + this.j, this.x, dotY);
+    }
+
+    let triangles = [];
+    const triangleBase = 100;
+    const triangleHeight = triangleBase * Math.sqrt(3) / 2;
+    let maxRows = 0;
+    let maxCols = 0;
+
+    function generateTriangles() {
+      const rows = Math.ceil(canvas.height / triangleHeight * 2) + 1;
+      const cols = Math.ceil(canvas.width / triangleBase) + 1;
+
+      for(let i = 0; i < rows; i++) {
+        for(let j = 0; j < cols; j++) {
+          console.log(i,j, maxRows, maxCols)
+          // Only add new triangle if it doesn't exist
+          if(i >= maxRows || j >= maxCols) {
+            const direction = i % 2 === 0 ? "up" : "down";
+            const opacity = Math.random();
+            const targetOpacity = Math.random();
+            const deadline = Date.now() + Math.random() * 5000;
+            const x = j * triangleBase + (i % 2 === 0 ? 0 : triangleBase / 2) - (Math.floor(i/2 % 2) * triangleBase / 2);
+            const y = (i - Math.floor(i/2)) * triangleHeight;
+            triangles.push(new Triangle(x, y, triangleBase, triangleHeight, direction, opacity, targetOpacity, deadline, i, j));
+          }
+        }
+      }
+      // Update maximum rows and cols
+      maxRows = Math.max(rows, maxRows);
+      maxCols = Math.max(cols, maxCols);
+    }
+
+    // Call this function initially to generate the triangles
+    generateTriangles();
+
+    const maxOpacityChangePerFrame = 0.001;
+
+    function animate() {
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const now = Date.now();
+
+      triangles.forEach(triangle => {
+        if(now >= triangle.deadline) {
+          triangle.targetOpacity = Math.random();
+          triangle.deadline = now + Math.random() * 2000;
+        }
+
+        const timeLeft = (triangle.deadline - now) / 1000;
+        const difference = triangle.targetOpacity - triangle.opacity;
+
+        triangle.opacity += Math.max(Math.min(difference / timeLeft, maxOpacityChangePerFrame), -maxOpacityChangePerFrame);
+
+        triangle.draw();
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      generateTriangles()
+    });
+  </script>
+</div>
+<div class="header">
+  <h1>Bryan Schmidt's Portfolio</h1>
+</div>
+<div class="description">
+  <p>This is a place where I showcase many of the small projects that I have created over the years. Most of them recently have been created with the assistance of AI tools such as ChatGPT, Claude 2, Github Co-pilot, and many more. Feel free to browse what I have created.</p>
+</div>
+<div class="filter-and-sort" id="filter-and-sort">
+  <div id="filter-tags">
+    <h3>Filter by Tags:</h3>
+  </div>
+  <div class="sort-options">
+    <label for="sort-by">Sort by:</label>
+    <select id="sort-by">
+      <option value="created-asc">Created Date (Ascending)</option>
+      <option value="created-desc">Created Date (Descending)</option>
+      <option value="updated-asc">Updated Date (Ascending)</option>
+      <option value="updated-desc" selected>Updated Date (Descending)</option>
+    </select>
+  </div>
+</div>
+<div class="projects" id="projects"></div>
+
+<script>
+  var projects = [
+    {
+      "title": "Cat and Mouse",
+      "description": "An autonomous cat chases mice on the screen. Befuddle him by clicking to add more!",
+      "screenshot": "canvas/cat/screenshot.png",
+      "link": "canvas/cat/index.html",
+      "created": "2022-03-11",
+      "updated": "2022-03-11",
+      "tags": ["Canvas"]
+    },
+    {
+      "title": "Webcam in Canvas",
+      "description": "Accessing the webcam in JS and doing cool things with it.",
+      "screenshot": "/canvas/webcam/screenshot.png",
+      "link": "/canvas/webcam",
+      "created": "2023-08-01",
+      "updated": "2023-08-01",
+      "tags": ["Canvas", "ChatGPT"],
+      "ai": {"name": "ChatGPT", "link": "https://chat.openai.com/share/f4004bd5-fbff-4598-81a8-3d27c9873796"}
+    },
+    {
+      "title": "Starship Shooter",
+      "description": "Destroy asteroids in this adrenaline-pumping action-packed video game! (WASD + Spacebar)",
+      "screenshot": "canvas/starship/screenshot.png",
+      "link": "canvas/starship/index.html",
+      "tags": ["Canvas"],
+      "created": "2022-03-11",
+      "updated": "2022-03-11"
+    },
+    {
+      "title": "Confetti",
+      "description": "Beautiful confetti that looks more like snow.",
+      "screenshot": "canvas/confetti/screenshot.png",
+      "link": "canvas/confetti/index.html",
+      "tags": ["Canvas"],
+      "created": "2022-03-11",
+      "updated": "2022-03-11"
+    },
+    {
+      "title": "Portfolio",
+      "description": "This portfolio",
+      "screenshot": "js/portfolio/screenshot.png",
+      "ai": {"name": "ChatGPT", "link": "https://chat.openai.com/share/83614f22-99ba-4fad-b6e9-c59fbe937085"},
+      "tags": ["JS", "ChatGPT"],
+      "created": "2023-08-02",
+      "updated": "2023-08-02"
+    }
+    // Add more projects as needed
+  ];
+
+  var tags = {
+    "JS": {"description": "Helloooooo", "color": "#34bb3a"},
+    "Canvas": {"description": "Using Canvas and Javascript", "color": "#E44D26"},
+    "ChatGPT": {"description": "Used ChatGPT to help with coding", "color": "#0099FF"},
+    // ... other tags
+  };
+  let currentTag = null;
+  let currentSort = null;
+
+  function sortProjects(filteredProjects, value) {
+    var sortedProjects;
+
+    switch (value) {
+      case 'created-asc':
+        sortedProjects = [...filteredProjects].sort((a, b) => new Date(a.created) - new Date(b.created));
+        break;
+      case 'created-desc':
+        sortedProjects = [...filteredProjects].sort((a, b) => new Date(b.created) - new Date(a.created));
+        break;
+      case 'updated-asc':
+        sortedProjects = [...filteredProjects].sort((a, b) => new Date(a.updated) - new Date(b.updated));
+        break;
+      case 'updated-desc':
+      case null:
+        sortedProjects = [...filteredProjects].sort((a, b) => new Date(b.updated) - new Date(a.updated));
+        break;
+      default:
+        sortedProjects = filteredProjects;
+    }
+
+    return sortedProjects
+  }
+
+  // Listen for changes in the sorting option
+  document.getElementById('sort-by').addEventListener('change', function() {
+    currentSort = this.value;
+    renderProjects();
+  });
+
+  // Function to display the unique tags for filtering
+  function displayTags() {
+    var filterTagsContainer = document.getElementById('filter-tags');
+    var uniqueTags = [...new Set(projects.flatMap(project => project.tags))];
+
+    // Create an "All" tag
+    var allTagElement = document.createElement('span');
+    allTagElement.className = 'tag filter-tag';
+    allTagElement.textContent = 'All';
+    allTagElement.onclick = function () {
+      currentTag = null;
+      renderProjects()
+    };
+    filterTagsContainer.appendChild(allTagElement);
+
+    uniqueTags.forEach(function (tag) {
+      var tagElement = document.createElement('span');
+      tagElement.className = 'tag filter-tag';
+      tagElement.textContent = tag;
+      tagElement.onclick = function () {
+        currentTag = tag;
+        renderProjects();
+      };
+
+      // Apply the color to the filter tags
+      tagElement.style.backgroundColor = tags[tag].color || 'gray';
+      if (!tags[tag].color) {
+        console.log(`The tag '${tag}' doesn't have a color`);
+      }
+
+      tagElement.title = tags[tag].description
+
+      filterTagsContainer.appendChild(tagElement);
+    });
+  }
+
+  // Function to filter projects by tag and update the view
+  function filterProjects(tag) {
+    if (tag === null) {
+      return renderProjects(projects);
+    }
+
+    var filteredProjects = projects.filter(project => project.tags.includes(tag));
+    renderProjects(filteredProjects);
+  }
+
+  // Function to render the projects
+  function renderProjects(tag, sort) {
+    let filteredProjects;
+
+    if (tag === null || currentTag === null) {
+      filteredProjects = projects;
+    } else {
+      filteredProjects = projects.filter(project => project.tags.includes(tag || currentTag));
+    }
+
+    var sortedProjects = sortProjects(filteredProjects, sort || currentSort);
+
+    var projectContainer = document.getElementById('projects');
+    projectContainer.innerHTML = '';
+
+    sortedProjects.forEach(function (project) {
+      var block = document.createElement('div');
+      block.className = 'project-block';
+
+      block.addEventListener('click', function(event) {
+        console.log(event);
+        window.open(project.link, '_blank');
+      });
+
+      // Div for the screenshot
+      var screenshotDiv = document.createElement('div');
+      screenshotDiv.className = 'screenshot';
+      screenshotDiv.style.backgroundImage = `url(${project.screenshot})`;
+
+      // Div for the information
+      var infoDiv = document.createElement('div');
+      infoDiv.className = 'info';
+      infoDiv.innerHTML = `
+        <h3 class="project-title">${project.title}</h3>
+        <p>${project.description}</p>
+        <div class="tags"></div>
+      `;
+
+      var tagsContainer = infoDiv.querySelector('.tags');
+      project.tags.forEach(function (tag) {
+        var tagElement = document.createElement('span');
+        tagElement.className = 'tag';
+        tagElement.textContent = tag;
+
+        tagElement.style.backgroundColor = tags[tag].color || 'gray';
+        tagElement.style.title = tags[tag].description;
+
+        tagsContainer.appendChild(tagElement);
+      });
+
+      // Check if there's AI data in the project
+      if (project.ai) {
+        // Create a link (button) for the AI data
+        var aiButton = document.createElement('button');
+        aiButton.className = 'ai-button';
+        aiButton.textContent = `View chat: ${project.ai.name}`;
+
+        // Add a click event listener to the AI button
+        aiButton.addEventListener('click', function(event) {
+          event.stopPropagation(); // Prevent the event from reaching the project block listener
+          window.open(project.ai.link, '_blank');
+        });
+
+        // Append the AI button to the project block
+        infoDiv.appendChild(aiButton);
+      }
+
+      // Appending the screenshot and info div to the project block
+      block.appendChild(screenshotDiv);
+      block.appendChild(infoDiv);
+
+      projectContainer.appendChild(block);
+    });
+  }
+
+
+  // Display all tags for filtering
+  displayTags();
+
+  // Sort projects by "Updated Date (Descending)" on page load
+  renderProjects();
+</script>
+
+<script>
+</script>
+
+</body>
+</html>

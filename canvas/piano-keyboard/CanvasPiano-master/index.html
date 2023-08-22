@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Canvas Piano</title>
+        <link rel="icon" href="piano_icon.png">
+        <link href="css/style.css"   rel="stylesheet" type="text/css"></link>
+        <link href="css/sliders.css" rel="stylesheet" type="text/css"></link>
+        <link href="css/w3.css"      rel="stylesheet" type="text/css"></link>
+        <script src="src/library/jquery.min.js"         ></script>
+        <script src="src/library/soundfont-player.js"   ></script>
+    </head>
+    <body class="noselect">
+        <script src="src/html/html_func.js"         ></script> <!-- Functions that modify the html      -->
+
+        <script src="src/piano/piano_func.js"       ></script> <!-- Useful functions for the piano      -->
+        <script src="src/piano/piano_globals.js"    ></script> <!-- Global variable definitions         -->
+        <script src="src/piano/piano_instrument.js" ></script> <!-- Piano that the user interacts with  -->
+        <script src="src/piano/piano_key.js"        ></script> <!-- Key class                           -->
+        <script src="src/piano/piano_keyhandler.js" ></script> <!-- Keyboard Input Handling             -->
+        <script src="src/piano/piano_tables.js"     ></script> <!-- Tables containing key definitions   -->
+
+        <script src="src/ui/ui_component.js"        ></script> <!-- Generic class for UI                -->
+        <script src="src/ui/ui_action.js"           ></script> <!-- Handles actions of the UI Piano Key -->
+        <script src="src/ui/ui_button.js"           ></script> <!-- Button for UI elements              -->
+        <script src="src/ui/ui_func.js"             ></script> <!-- Common functions for UI             -->
+        <script src="src/ui/ui_globals.js"          ></script> <!-- Global variable definitions for UI  -->
+        <script src="src/ui/ui_label.js"            ></script> <!-- Label class for basic UI components -->
+        <script src="src/ui/ui_mouse_events.js"     ></script> <!-- Handling mouse events               -->
+        <script src="src/ui/ui_piano_key.js"        ></script> <!-- Piano Key UI elements               -->
+        <script src="src/ui/ui_piano.js"            ></script> <!-- Code for the UI design of the piano -->
+        
+        <script src="src/initialize.js"             ></script> <!-- Setup                               -->
+        <div class="w3-row">
+            <!-- Column 1 -->
+            <div class="w3-col s6 w3-dark-grey w3-center" style="height: 360px; width: 904px;">
+                <div class="gradient-gray-black" id="container" name="header">
+                    <!-- Utility Section -->
+                    <div>
+                        <div style="display: inline-block;">
+                            <!-- Instrument Section -->
+                            <label for="html_instrument_dropdown">Instrument</label>
+                            <div style="display: block;">
+                                <select name="instrument" id="html_instrument_dropdown" onchange="html_setNewInstrument()"></select>
+                            </div>
+                            <!-- End Instrument Section -->
+                        </div>
+                        <div style="display: inline-block;">
+                            <!-- Sustain Section -->
+                            <label>Sustain</label>
+                            <div style="display: block; padding: 7px; margin: auto; width: 50%;">
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" tabindex="0" checked>
+                                    <label class="onoffswitch-label" for="myonoffswitch">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                                <!-- End Sustain Section -->
+                            </div>
+                        </div>
+                        <div style="display: inline-block;">
+                            <!-- Instrument Section -->
+                            <label for="html_transposition_label">Transpose</label>
+                            <div style="display: block; padding-left: 10px;">
+                                <input id="html_transposition_input" style="width: 50px;" type="number" step="1" value="0" onchange="html_modifyTransposition()"></input>
+                            </div>
+                            <!-- End Instrument Section -->
+                        </div>
+                        <!-- End Utility Section -->
+                    </div>
+                </div>
+
+                <!-- Canvas Piano -->
+                <div id="piano_thing">
+                    <canvas id="piano_canvas" width="900" height="250">
+                        Canvas unsupported on your browser
+                    </canvas>
+                </div>
+            </div> <!-- End of <div class="w3-col s9 w3-dark-grey w3-center"> -->
+            <!-- End of Column 1 -->
+            <div class="w3-col s5 w3-dark-grey w3-center">
+                <textarea id="html_keymap_textarea" spellcheck="false">
+                </textarea>
+                <div class="btn" onclick="loadKeymap()">Submit</div>
+            </div>
+        </div>
+        <div class="w3-row">
+            <center><h1>Sheet Music</h1></center>
+            <div class="w3-col s4 w3-dark-grey w3-center">
+                <textarea spellcheck="false">
+                    Paste Sheet Music Here
+                    Notation:
+                    [playtogether]
+                    {play quickly}
+                    p l a y s l o w e r
+                </textarea>
+            </div>
+            <div class="w3-col s4 w3-dark-grey w3-center">
+                <textarea spellcheck="false">
+                    Legend of Zelda Temple Theme (use -2 Transpose)
+                    u t e u t e u t 
+                    i t e i t e i t 
+                    I t e I t e I t 
+                    i t [et] y [ui] i [tO] p [ea] s [id] f [tg] H 
+                    [eupjxb] [eupjxb] [eupjxb] [eupjxb] 
+                    t r E 
+                    [up] t e u t [ea] [us] [tf] 
+                    [ig] t e [is] t e [ig] t 
+                    [IG] t e [Is] t e [IG] t 
+                    [ig] t [ej] [ih] t [eg] i t 
+                    [up] t e u t [ea] [us] [tf] 
+                    [ig] t e [is] t e [ig] t 
+                    [IG] t e [Is] t e [IG] t 
+                    [ig] t [ej] [ih] t [eg] i t 
+                    [ruO] [ruO] [ruO] [ruO] [ryO] 
+                    [fx] [HV] [kn] 
+                    [ruO] [ruO] [ruO] [ruO] [riO] 
+                    [fx] [HV] [kn] 
+                    [ruO] [ruO] [ruO] [ruO] [ryO] 
+                    [fx] [HV] [kn] 
+                    [ruO] [ruO] [ruO] [ruO] [roO] 
+                    [ri] [ru] 
+                    [up] t e u t [ea] [us] [tf] 
+                    [ig] t e [is] t e [ig] t 
+                    [IG] t e [Is] t e [IG] t 
+                    [ig] t [ej] [ih] t [eg] i t 
+                    [up] t e u t [ea] [us] [tf] 
+                    [ig] t e [is] t e [ig] t 
+                    [IG] t e [Is] t e [IG] t 
+                    [ig] t [ej] [ih] t [eg] i t 
+                    [Od] [ya] [rs] [Od] y s [Oa] [yO] p 
+                    [Oa] [yO] [rp] [Oa] y p O [yf] g 
+                    [Eh] [yd] [of] [Eg] y [of] [Ed] [yP] s 
+                    [Ed] [yP] [os] [Ed] y [of] [Eg] [ya] s 
+                    [Od] [ya] [rs] [Od] y s [Oa] [yO] p 
+                    [Oa] [yO] [rp] [Oa] y p O y 
+                    [ef] 
+                    t 
+                    u 
+                    p s p u t e t [ud] p s p [us] t 
+                    [ea] t u s p s p d u t [ef] t u g p s p h u t 
+                    [Eh] y o P d P o y E y [og] P d P [of] y 
+                    [Eg] y o f P d P d o y [Ef] y o g P d P h o y 
+                    [ej] T I p S p I T e T [Ip] p S p [Ia] T 
+                    [eS] T I d p S p f I T [eG] T I h p S p j I T 
+                    [Eh] y o P d P o y E y [og] P d P [of] y 
+                    [Eg] y o f P d P d o y [Ef] y o g P d P h o y 
+                    [ef] t u p s p u t e t [ud] p s p [us] t 
+                    [ea] t u s p s p d u t [ef] t u g p s p h u t 
+                    [Eh] y o P d P o y E y [og] P d P [of] y 
+                    [Eg] y o f P d P d o y [Ef] y o g P d P h o y 
+                    [ej] T I p S p I T e T [Ip] p S p [Ia] T 
+                    [eS] T I d p S p f I T [eG] T I h p S p j I T 
+                    [Eh] y o P d P o y E y [og] P d P [of] y 
+                    [Eg] y o f P d P d o y [Ef] y o g P d P h o y 
+                    [ru] [ru] [ru] [ru] [ry] 
+                    [fx] [HV] [kn] 
+                    [ru] [ru] [ru] [ru] [ri] 
+                    [fx] [HV] [kn] 
+                    [ru] [ru] [ru] [ru] [ry] 
+                    [fx] [HV] [kn] 
+                    [ru] [ru] [ru] [ru] [ro] 
+                    [rig] [ruf] 
+                    [up] t e u t [ea] [us] [tf] 
+                    [ig] t e [is] t e [ig] t 
+                    [IG] t e [Is] t e [IG] t 
+                    [ig] t [ej] [ih] t [eg] i t 
+                    [up] t e u t [ea] [us] [tf] 
+                    [ig] t e [is] t e [ig] t 
+                    [IG] t e [Is] t e [IG] t 
+                    [ig] t [ej] [ih] t [eg] i t 
+                    [ruO] [ruO] [ruO] [ruO] [ryO] 
+                    [fx] [HV] [kn] 
+                    [ruO] [ruO] [ruO] [ruO] [riO] 
+                    [fx] [HV] [kn] 
+                    [ruO] [ruO] [ruO] [ruO] [ryO] 
+                    [fx] [HV] [kn] 
+                    [ruO] [ruO] [ruO] [ruO] [roO] 
+                    [ri] [ru] 
+                    [up] t e u t [ea] [us] [tf] 
+                    [ig] t e [is] t e [ig] t 
+                    [IG] t e [Is] t e [IG] t 
+                    [ig] t [ej] [ih] t [eg] i t 
+                    [up] t e u t [ea] [us] [tf] 
+                    [ig] t e [is] t e [ig] t 
+                    [IG] t e [Is] t e [IG] t 
+                    [ig] t [ej] [ih] t [eg] i t 
+                    [Od] [ya] [rs] [Od] y s [Oa] y 
+                    [Oa] [yO] [rp] [Oa] y p O y 
+                    [Eh] [yd] [of] [Eg] y [of] [Ed] y 
+                    [Ed] [yP] [os] [Ed] y [of] [Eg] y 
+                    [Od] [ya] [rs] [Od] y s [Oa] y 
+                    [Oa] [yO] [rp] [Oa] y p O y 
+                    [ef] 
+                    t 
+                    u 
+                    p s p u t e t [ud] p s p [us] t 
+                    [ea] t u s p s p d u t [ef] t u g p s p h u t 
+                    [Eh] y o P d P o y E y [og] P d P [of] y 
+                    [Eg] y o f P d P d o y [Ef] y o g P d P h o y 
+                    [ej] T I p S p I T e T [Ip] p S p [Ia] T 
+                    [eS] T I d p S p f I T [eG] T I h p S p j I T 
+                    [Eh] y o P d P o y E y [og] P d P [of] y 
+                    [Eg] y o f P d P d o y [Ef] y o g P d P h o y 
+                    [ef] t u p s p u t e t [ud] p s p [us] t 
+                    [ea] t u s p s p d u t [ef] t u g p s p h u t 
+                    [Eh] y o P d P o y E y [og] P d P [of] y 
+                    [Eg] y o f P d P d o y [Ef] y o g P d P h o y 
+                    [ej] T I p S p I T e T [Ip] p S p [Ia] T 
+                    [eS] T I d p S p f I T [eG] T I h p S p j I T 
+                    [Eh] y o P d P o y E y [og] P d P [of] y 
+                    [Eg] y o f P d P d o y [Ef] y o g P d P h o y 
+                    [ru] [ru] [ru] [ru] [ry] 
+                    [fx] [HV] [kn] 
+                    [ru] [ru] [ru] [ru] [ri] 
+                    [fx] [HV] [kn] 
+                    [ru] [ru] [ru] [ru] [ry] 
+                    [fx] [HV] [kn] 
+                    [ru] [ru] [ru] [ru] [ro] 
+                    0 r y i [rig] ^9 e T u [ruf] 
+
+                </textarea>
+            </div>
+            <div class="w3-col s4 w3-dark-grey w3-center">
+                <textarea spellcheck="false">
+                    Bach - Air (use 2 Transpose)
+                    [8f] t r 7 6 e w 5 
+                    4 [qj] g [Qf] d s [$a] s [5a] w [qp] o 4 
+                    [3h] 0 9 2 ! f [*P] p [6d] S [eh] g 
+                    [2g] 9 8 1 ? d [7p] o [5s] a [wg] f 
+                    [8f] t r [7G] h [6s] [es] d f Q d [9d] s 
+                    [wa] p [8p] a s 9 [2a] p [5o] 6 7 8 9 q 0 9 
+                    [8f] t r 7 6 e w 5 
+                    4 [qj] g [Qf] d s [$a] s [5a] w [qp] o 4 
+                    [3h] 0 9 2 ! f [*P] p [6d] S [eh] g 
+                    [2g] 9 8 1 ? d [7p] o [5s] a [wg] f 
+                    [8f] t r [7G] h [6s] [es] d f Q d [9d] s 
+                    [wa] p [8p] a s 9 [2a] p [5o] 
+                    [5a] w q s a [4p] a o [3h] 0 9 [2P] 
+                    [!p] [*j] 0 h [6g] f [9g] y t f d s [8a] p 
+                    [7O] p [ra] e s [6d] % f [6g] 7 [%f] 
+                    [6d] s [qa] p [9a] s d [0s] [6p] e w 5 
+                    [$s] Q 0 f [3d] s [2j] 9 8 [1h] G 
+                    [?f] d h [7o] [8p] 9 a s [5a] w p [qo] 4 
+                    [3s] 0 q [4f] d [$d] Q w [5g] f 
+                    [%f] W e [6h] g [9g] y t 8 
+                    [7o] r w a [rd] g [tg] d [8f] ^ E g h 
+                    [es] 6 5 f [wh] J [qj] 4 3 [0s] 
+                    [9a] d [2g] 1 [8p] [7o] [5d] f g 8 f q d 
+                    [ws] a p q a [ws] [5a] s a s [1s] 
+                </textarea>
+            </div>
+        </div>
+    </body>
+</html>

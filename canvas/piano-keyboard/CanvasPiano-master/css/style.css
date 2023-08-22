@@ -1,0 +1,71 @@
+/* https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting */
+.noselect 
+{
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+#container 
+{
+    color: white;
+    text-align: center;
+    padding-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100px;
+    width: 904px;
+    font: 24px Arial;
+}
+
+.wrapper 
+{
+    position: relative;
+    width   : 1204px  ;
+    height  : 804px   ;
+}
+.wrapper canvas 
+{
+    position: absolute;
+    top     : 0       ;
+    left    : 0       ;
+}
+
+body
+{
+    background-color: darkgray;
+}
+
+canvas
+{
+    border: 2px solid black;
+}
+
+.gradient-gray-black 
+{
+    background-image: linear-gradient(rgb(85, 85, 85), rgb(19, 19, 19));
+}
+
+textarea
+{
+    font: Consolas;
+    width: 100%;
+    height: 400px;
+}
+
+.btn
+{
+    width: 100%;
+    color: white;
+    background-color: dodgerblue;
+}
+
+.btn:hover
+{
+    filter: brightness(150%);
+    cursor: pointer;
+}
